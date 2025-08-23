@@ -1,0 +1,174 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PREÂMBULO: Configurações do documento e pacotes
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[12pt, a4paper]{article}
+
+% Pacotes para acentuação e linguagem em português
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+
+% Pacotes para matemática
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% Pacote para ajustar as margens da página
+\usepackage[margin=2.5cm]{geometry}
+
+% Pacote para incluir imagens (necessário para o logo)
+\usepackage{graphicx}
+
+% Melhora a aparência das fontes
+\usepackage{lmodern}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% INÍCIO DO DOCUMENTO
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PÁGINA DE ROSTO
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{titlepage}
+    \centering
+
+    % Para o logo, salve a imagem como 'dest_logo.png' na mesma pasta do seu arquivo .tex
+    % \includegraphics[width=0.4\textwidth]{dest_logo.png}\par\vspace{1cm}
+
+    % Se não tiver a imagem, pode usar o texto:
+    {\Huge \textbf{DEST}}\par
+
+    \vspace{2cm}
+
+    {\Large \textbf{Inferência Estatística}} \par
+    {\Large Lista 3 } \par
+
+    \vspace{2.5cm}
+
+    {\Large \textbf{Lista de Exercícios 3 - Resolução}}
+
+    \vfill % Empurra o texto seguinte para a parte de baixo da página
+
+    \large
+    \begin{flushleft}
+    \textbf{Nome:} Miqueias T. \\
+    \textbf{Data:} \today
+    \end{flushleft}
+\end{titlepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CORPO DO DOCUMENTO - QUESTÕES E RESOLUÇÕES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section*{Questão 1}
+A demora $D$ pode assumir valores no conjunto $\{1, 2, \dots, 20\}$, com cada valor tendo a mesma probabilidade. Temos uma distribuição Uniforme Discreta, com $P(D=d) = 1/20$ para cada $d$ no conjunto.
+\begin{itemize}
+    \item[\textbf{a)}] \textbf{Demorar mais de 10 minutos:} $P(D > 10) = P(D=11) + \dots + P(D=20)$. São 10 resultados possíveis.
+    $$ P(D > 10) = 10 \cdot \frac{1}{20} = \frac{1}{2} $$
+    \item[\textbf{b)}] \textbf{Pelo menos 5 mas não mais de 10 minutos:} $P(5 \le D \le 10)$. Os valores são $\{5, 6, 7, 8, 9, 10\}$, totalizando 6 resultados.
+    $$ P(5 \le D \le 10) = 6 \cdot \frac{1}{20} = \frac{3}{10} $$
+    \item[\textbf{c)}] \textbf{Demora não chegar a 5 minutos:} $P(D < 5)$. Os valores são $\{1, 2, 3, 4\}$, totalizando 4 resultados.
+    $$ P(D < 5) = 4 \cdot \frac{1}{20} = \frac{1}{5} $$
+    \item[\textbf{d)}] \textbf{Probabilidade condicional:} Dado que o ônibus ainda não passou às 8:10 ($D > 10$), o novo espaço amostral é $\{11, 12, \dots, 20\}$, com 10 resultados. A espera de até 3 minutos para o amigo significa que o ônibus deve chegar nos minutos 11, 12 ou 13.
+    $$ P(\text{espera} \le 3 \mid D > 10) = \frac{\text{nº de casos favoráveis}}{\text{nº de casos possíveis}} = \frac{3}{10} $$
+\end{itemize}
+
+\section*{Questão 2}
+Seja $X$ o número de pacientes curados. Temos um experimento Binomial com $n=15$ e $p=0.80$. Assim, $X \sim B(15, 0.80)$.
+\begin{itemize}
+    \item[\textbf{a)}] \textbf{Todos serem curados:} $P(X=15)$.
+    $$ P(X=15) = \binom{15}{15} (0.80)^{15} (0.20)^{0} = (0.80)^{15} \approx 0.0352 $$
+    \item[\textbf{b)}] \textbf{Pelo menos dois não serem curados:} Seja $Y$ o número de pacientes \textbf{não} curados, $Y \sim B(15, 0.20)$. O evento é $P(Y \ge 2)$.
+    \begin{align*}
+    P(Y \ge 2) &= 1 - P(Y < 2) = 1 - [P(Y=0) + P(Y=1)] \\
+    P(Y=0) &= \binom{15}{0} (0.20)^0 (0.80)^{15} \approx 0.0352 \\
+    P(Y=1) &= \binom{15}{1} (0.20)^1 (0.80)^{14} \approx 0.1319 \\
+    P(Y \ge 2) &= 1 - (0.0352 + 0.1319) = 1 - 0.1671 = 0.8329
+    \end{align*}
+    \item[\textbf{c)}] \textbf{Ao menos 10 ficarem livres:} $P(X \ge 10)$.
+    $$ P(X \ge 10) = \sum_{k=10}^{15} \binom{15}{k} (0.80)^k (0.20)^{15-k} \approx 0.9389 $$
+    (Este valor é tipicamente calculado com software estatístico).
+\end{itemize}
+
+\section*{Questão 3}
+Seja $N$ o número de pedidos por hora, $N \sim Poisson(\lambda=5)$.
+\begin{itemize}
+    \item[\textbf{a)}] \textbf{Mais de 2 pedidos por hora:} $P(N > 2)$.
+    \begin{align*}
+    P(N > 2) &= 1 - P(N \le 2) = 1 - [P(N=0) + P(N=1) + P(N=2)] \\
+    &= 1 - \left[ \frac{e^{-5}5^0}{0!} + \frac{e^{-5}5^1}{1!} + \frac{e^{-5}5^2}{2!} \right] \\
+    &= 1 - e^{-5}(1 + 5 + 12.5) = 1 - 18.5 \cdot e^{-5} \approx 1 - 0.1246 = 0.8754
+    \end{align*}
+    \item[\textbf{b)}] \textbf{50 pedidos em um dia (8 horas):} A taxa se ajusta para o período. $\lambda' = 5 \text{ pedidos/hora} \times 8 \text{ horas} = 40$. Seja $Y$ o número de pedidos no dia, $Y \sim Poisson(40)$.
+    $$ P(Y=50) = \frac{e^{-40}40^{50}}{50!} \approx 0.0177 $$
+    \item[\textbf{c)}] \textbf{Não haver nenhum pedido em um dia:} $P(Y=0) = \frac{e^{-40}40^0}{0!} = e^{-40}$. Este é um número extremamente pequeno, muito próximo de zero. Sim, é um evento raríssimo.
+\end{itemize}
+\newpage
+
+\section*{Questão 5}
+Seja $T$ a temperatura, $T \sim N(\mu=74.2, \sigma^2=2.2^2)$. Usamos a padronização $Z = (T-\mu)/\sigma$.
+\begin{itemize}
+    \item[\textbf{a)}] \textbf{Temperatura inferior a $70^{\circ}C$:}
+    $$ P(T < 70) = P\left(Z < \frac{70 - 74.2}{2.2}\right) = P(Z < -1.91) \approx 0.0281 $$
+    \item[\textbf{b)}] \textbf{Temperatura ultrapassar $75^{\circ}C$:}
+    $$ P(T > 75) = P\left(Z > \frac{75 - 74.2}{2.2}\right) = P(Z > 0.36) = 1 - P(Z \le 0.36) \approx 1 - 0.6406 = 0.3594 $$
+    \item[\textbf{c)}] \textbf{Pelo menos uma não atingir $70^{\circ}C$ em 20 pasteurizações:} Seja $p = P(T < 70) \approx 0.0281$. Seja $Y$ o número de vezes que a temperatura ficou abaixo de $70^{\circ}C$, $Y \sim B(20, 0.0281)$.
+    $$ P(Y \ge 1) = 1 - P(Y=0) = 1 - \binom{20}{0}(0.0281)^0(1-0.0281)^{20} = 1 - (0.9719)^{20} \approx 1 - 0.564 = 0.436 $$
+    \item[\textbf{d)}] \textbf{Ajustar a média $\mu'$:} Queremos $P(T < 70) \le 0.0005$. Da tabela Z, a área 0.0005 corresponde a $z \approx -3.3$.
+    $$ \frac{70 - \mu'}{2.2} \le -3.3 \implies 70 - \mu' \le -7.26 \implies \mu' \ge 77.26^{\circ}C $$
+    A nova média deveria ser de no mínimo $77.26^{\circ}C$.
+    \item[\textbf{e)}] \textbf{Ajustar o desvio padrão $\sigma'$:} Com $\mu = 74.5^{\circ}C$, queremos $P(T < 70) \le 0.0005$.
+    $$ \frac{70 - 74.5}{\sigma'} \le -3.3 \implies \frac{-4.5}{\sigma'} \le -3.3 \implies 4.5 \ge 3.3\sigma' \implies \sigma' \le \frac{4.5}{3.3} \approx 1.36^{\circ}C $$
+    O novo desvio padrão deve ser de no máximo $1.36^{\circ}C$.
+\end{itemize}
+
+\section*{Questão 6}
+Se $X \sim B(n,p)$, sabemos que $E[X]=np$ e $Var(X)=np(1-p)$. O estimador da proporção é $\hat{p} = X/n$.
+\begin{itemize}
+    \item \textbf{Esperança de $\hat{p}$:}
+    $$ E(\hat{p}) = E\left(\frac{X}{n}\right) = \frac{1}{n}E[X] = \frac{1}{n}(np) = p $$
+    \item \textbf{Variância de $\hat{p}$:} A expressão $E((X/n - p)^2)$ é a definição da variância do estimador $\hat{p}$.
+    $$ Var(\hat{p}) = Var\left(\frac{X}{n}\right) = \frac{1}{n^2}Var(X) = \frac{1}{n^2}(np(1-p)) = \frac{p(1-p)}{n} $$
+\end{itemize}
+
+\section*{Questão 7}
+Se $X \sim Poisson(\lambda)$ e $P(X=1) = P(X=2)$:
+$$ \frac{e^{-\lambda}\lambda^1}{1!} = \frac{e^{-\lambda}\lambda^2}{2!} \implies \lambda = \frac{\lambda^2}{2} $$
+Como $\lambda>0$, podemos dividir por $\lambda$, obtendo $1 = \lambda/2$, o que implica $\lambda=2$.
+Agora, calculamos $P(X=4)$ para $\lambda=2$:
+$$ P(X=4) = \frac{e^{-2}2^4}{4!} = \frac{16 \cdot e^{-2}}{24} = \frac{2}{3}e^{-2} \approx 0.09 $$
+
+\section*{Questão 8}
+A implementação computacional e o gráfico são tipicamente feitos em Python com as bibliotecas `numpy`, `scipy` e `matplotlib`.
+\begin{verbatim}
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import multivariate_normal
+
+# Parâmetros
+mu = np.array([0, 4])
+cov_matrix = np.array([[1, 2], [2, 9]])
+
+# b) Implementação da densidade
+bivariate_norm = multivariate_normal(mean=mu, cov=cov_matrix)
+
+# c) Desenho do gráfico
+x = np.linspace(-5, 5, 500)
+y = np.linspace(-5, 15, 500)
+X, Y = np.meshgrid(x, y)
+pos = np.dstack((X, Y))
+
+# A densidade (PDF) em cada ponto da grade
+Z = bivariate_norm.pdf(pos)
+
+fig = plt.figure(figsize=(10, 7))
+ax = fig.add_subplot(111, projection='3d')
+ax.plot_surface(X, Y, Z, cmap='viridis')
+ax.set_xlabel('Y1')
+ax.set_ylabel('Y2')
+ax.set_zlabel('Densidade')
+ax.set_title('Densidade da Normal Bivariada')
+plt.show()
+\end{verbatim}
+
+\end{document}

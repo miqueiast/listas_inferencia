@@ -1,0 +1,171 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PREÂMBULO: Configurações do documento e pacotes
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[12pt, a4paper]{article}
+
+% Pacotes para acentuação e linguagem em português
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+
+% Pacotes para matemática
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% Pacote para ajustar as margens da página
+\usepackage[margin=2.5cm]{geometry}
+
+% Pacote para incluir imagens (necessário para o logo)
+\usepackage{graphicx}
+
+% Melhora a aparência das fontes
+\usepackage{lmodern}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% INÍCIO DO DOCUMENTO
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PÁGINA DE ROSTO
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{titlepage}
+    \centering
+
+    % Para o logo, salve a imagem como 'dest_logo.png' na mesma pasta do seu arquivo .tex
+    % \includegraphics[width=0.4\textwidth]{dest_logo.png}\par\vspace{1cm}
+
+    % Se não tiver a imagem, pode usar o texto:
+    {\Huge \textbf{DEST}}\par
+
+    \vspace{2cm}
+
+    {\Large \textbf{Inferência Estatística}} \par
+    {\Large Lista 4 } \par
+
+    \vspace{2.5cm}
+
+    {\Large \textbf{Lista de Exercícios 4 - Resolução}}
+
+    \vfill % Empurra o texto seguinte para a parte de baixo da página
+
+    \large
+    \begin{flushleft}
+    \textbf{Nome:} Miqueias T. \\
+    \textbf{Data:} \today
+    \end{flushleft}
+\end{titlepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CORPO DO DOCUMENTO - QUESTÕES E RESOLUÇÕES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section*{Questão 1}
+\textit{Suponha que a nota média dos alunos de Estatística Inferencial é de 70\%. Dê um limite superior para a proporção de estudante que vão tirar nota de pelo menos 90\%.}
+
+\textbf{Solução:}
+Utilizaremos a Desigualdade de Markov, que afirma que para uma variável aleatória não negativa $X$ e uma constante $a > 0$, $P(X \ge a) \le \frac{E[X]}{a}$.
+Seja $X$ a nota do aluno. Temos $E[X] = 70$. Queremos um limite para $P(X \ge 90)$.
+$$ P(X \ge 90) \le \frac{E[X]}{90} = \frac{70}{90} = \frac{7}{9} \approx 0.7778 $$
+O limite superior para a proporção de alunos com nota de pelo menos 90\% é 7/9.
+
+\section*{Questão 2}
+\textit{Uma moeda é viciada com $p(\text{cara})=0.20$. Em 20 lançamentos, encontre um limite para a probabilidade de se obter ao menos 16 caras e compare com o valor exato.}
+
+\textbf{Solução:}
+Seja $X$ o número de caras, $X \sim B(n=20, p=0.2)$. A esperança é $E[X] = np = 20 \cdot 0.2 = 4$.
+Usando a Desigualdade de Markov para $a=16$:
+$$ P(X \ge 16) \le \frac{E[X]}{16} = \frac{4}{16} = \frac{1}{4} = 0.25 $$
+O limite superior é de 25\%.
+
+\textbf{Cálculo da probabilidade exata:}
+$P(X \ge 16) = \sum_{k=16}^{20} \binom{20}{k} (0.2)^k (0.8)^{20-k}$. Este valor é extremamente pequeno, da ordem de $1.4 \times 10^{-8}$.
+
+\textbf{Comparação:} O limite de 0.25 é matematicamente válido, mas é uma aproximação extremamente grosseira e pouco informativa, pois a probabilidade real é praticamente zero. Isso mostra que a Desigualdade de Markov, embora geral, pode fornecer limites muito frouxos.
+
+\section*{Questão 3}
+\textit{Uma moeda é lançada 100 vezes. Encontre um limite superior para a probabilidade do número de caras ser de no mínimo 60 ou no máximo 40.}
+
+\textbf{Solução:}
+Utilizaremos a Desigualdade de Chebyshev. Assumindo uma moeda justa, $X \sim B(100, 0.5)$.
+A média é $\mu = np = 100 \cdot 0.5 = 50$.
+A variância é $\sigma^2 = np(1-p) = 100 \cdot 0.5 \cdot 0.5 = 25$.
+O evento é $P(X \ge 60 \text{ ou } X \le 40)$, que pode ser reescrito como $P(|X - 50| \ge 10)$.
+Pela Desigualdade de Chebyshev, $P(|X - \mu| \ge k) \le \frac{\sigma^2}{k^2}$.
+Com $k=10$:
+$$ P(|X - 50| \ge 10) \le \frac{25}{10^2} = \frac{25}{100} = 0.25 $$
+
+\section*{Questão 4}
+\textit{Um jogador de basquete acerta uma cesta com $p=0.5$. Em 20 arremessos, qual a probabilidade de acertar pelo menos 9? Use a Binomial e a aproximação pelo TLC.}
+
+\textbf{Solução:}
+Seja $X$ o número de acertos, $X \sim B(20, 0.5)$.
+\textbf{Probabilidade Exata (Binomial):} $P(X \ge 9) = 1 - P(X \le 8)$.
+$$ P(X \ge 9) = \sum_{k=9}^{20} \binom{20}{k}(0.5)^k(0.5)^{20-k} \approx 0.7483 $$
+\textbf{Aproximação pelo Teorema Central do Limite (TLC):}
+$\mu = np = 10$ e $\sigma = \sqrt{np(1-p)} = \sqrt{5} \approx 2.236$.
+Aproximamos a Binomial por uma Normal $N(10, 5)$. Usando a correção de continuidade para $P(X \ge 9)$, calculamos $P(X_{cont} > 8.5)$.
+$$ P(X > 8.5) = P\left(Z > \frac{8.5 - 10}{\sqrt{5}}\right) = P(Z > -0.6708) = P(Z < 0.6708) \approx 0.7488 $$
+A aproximação do TLC com correção de continuidade é excelente. (Nota: o valor de 0.8133 no enunciado do exercício parece ter sido calculado sem a correção de continuidade, o que é menos preciso).
+
+\section*{Questão 6}
+\textit{Considere que o tempo de vida de um dispositivo eletrônico segue uma distribuição exponencial com parâmetro $\lambda=100$. Uma amostra iid de tamanho n é retirada. Qual é a distribuição aproximada da média amostral?}
+
+\textbf{Solução:}
+Seja $Y$ o tempo de vida, $Y \sim Exp(\lambda=100)$. A esperança e a variância são:
+$E[Y] = 1/\lambda = 1/100$.
+$Var(Y) = 1/\lambda^2 = 1/10000$.
+Pelo Teorema Central do Limite (TLC), para $n$ suficientemente grande, a distribuição da média amostral $\bar{Y}$ pode ser aproximada por uma distribuição Normal.
+A média de $\bar{Y}$ é $E[\bar{Y}] = E[Y] = 1/100$.
+A variância de $\bar{Y}$ é $Var(\bar{Y}) = \frac{Var(Y)}{n} = \frac{1/10000}{n} = \frac{1}{10000n}$.
+Portanto, a distribuição aproximada é:
+$$ \bar{Y} \approx N\left(\frac{1}{100}, \frac{1}{10000n}\right) $$
+
+\section*{Questão 7}
+\textit{Seja $Y_{1},...,Y_{n}$ uma va iid da distribuição de Poisson com parâmetro $\lambda$.}
+
+\begin{itemize}
+    \item[\textbf{a)}] \textbf{Mostre que a média amostral converge em probabilidade para $\lambda$:}
+    Esta é uma aplicação da Lei Fraca dos Grandes Números (LFGN).
+    Sabemos que $E[Y_i] = \lambda$ e $Var(Y_i) = \lambda < \infty$.
+    A média da média amostral é $E[\bar{Y}] = E[Y_i] = \lambda$.
+    A variância da média amostral é $Var(\bar{Y}) = \frac{Var(Y_i)}{n} = \frac{\lambda}{n}$.
+    Como $Var(\bar{Y}) \to 0$ quando $n \to \infty$, a LFGN garante que $\bar{Y}$ converge em probabilidade para sua esperança, $\lambda$.
+
+    \item[\textbf{b)}] \textbf{Encontre a distribuição aproximada da média amostral:}
+    Pelo Teorema Central do Limite, para $n$ grande:
+    $$ \bar{Y} \approx N\left(E[\bar{Y}], Var(\bar{Y})\right) \implies \bar{Y} \approx N\left(\lambda, \frac{\lambda}{n}\right) $$
+    
+    \item[\textbf{c)}] \textbf{Ilustração computacional:} O código Python abaixo simula o processo.
+\end{itemize}
+\begin{verbatim}
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import norm
+
+# Parâmetros
+lamb = 5  # lambda da Poisson
+n = 100   # tamanho da amostra
+num_simulations = 10000 # número de médias amostrais a gerar
+
+# Gerar 10000 médias amostrais de tamanho 100
+sample_means = [np.mean(np.random.poisson(lamb, n)) for _ in range(num_simulations)]
+
+# Plotar o histograma das médias
+plt.hist(sample_means, bins=30, density=True, alpha=0.6, label='Distribuição Empírica de Y_bar')
+
+# Plotar a densidade da Normal teórica (TLC)
+mu_normal = lamb
+sigma_normal = np.sqrt(lamb / n)
+x = np.linspace(mu_normal - 4*sigma_normal, mu_normal + 4*sigma_normal, 100)
+plt.plot(x, norm.pdf(x, mu_normal, sigma_normal), 'r-', lw=2, label='Aproximação Normal (TLC)')
+
+plt.title(f'Distribuição de Médias Amostrais (n={n}) vs. TLC')
+plt.xlabel('Média Amostral')
+plt.ylabel('Densidade')
+plt.legend()
+plt.grid(True)
+plt.show()
+\end{verbatim}
+
+\end{document}
