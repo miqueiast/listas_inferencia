@@ -19,10 +19,14 @@ __pycache__/
 # Ignorar arquivos de log
 *.log
 
-#Ignorar arquivos LaTex
-.aux
-.fdb_latexmk
-.fls
-.sybctex.gz
-.toc
-.out
+# Ignorar arquivos gerados pelo LaTeX
+*.aux
+*.bbl
+*.blg
+*.fls
+*.log
+*.nav
+*.out
+*.snm
+*.synctex.gz
+*.toc
