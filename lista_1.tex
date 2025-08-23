@@ -1,0 +1,179 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PREÂMBULO: Configurações do documento e pacotes
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[12pt, a4paper]{article}
+
+% Pacotes para acentuação e linguagem em português
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+
+% Pacotes para matemática
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% Pacote para ajustar as margens da página
+\usepackage[margin=2.5cm]{geometry}
+
+% Pacote para incluir imagens (necessário para o logo)
+\usepackage{graphicx}
+
+% Melhora a aparência das fontes
+\usepackage{lmodern}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% INÍCIO DO DOCUMENTO
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PÁGINA DE ROSTO
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{titlepage}
+    \centering
+
+    % Para o logo, salve a imagem como 'dest_logo.png' na mesma pasta do seu arquivo .tex
+    % \includegraphics[width=0.4\textwidth]{dest_logo.png}\par\vspace{1cm}
+
+    % Se não tiver a imagem, pode usar o texto:
+    {\Huge \textbf{DEST}}\par
+
+    \vspace{2cm}
+
+    {\Large \textbf{Inferência Estatística}} \par
+    {\Large Lista 1 } \par
+
+    \vspace{2.5cm}
+
+    {\Large \textbf{Lista de Exercícios 1 - Resolução}}
+
+    \vfill % Empurra o texto seguinte para a parte de baixo da página
+
+    \large
+    \begin{flushleft}
+    \textbf{Nome:} Miqueias T. \\
+    \textbf{Data:} \today
+    \end{flushleft}
+\end{titlepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CORPO DO DOCUMENTO - QUESTÕES E RESOLUÇÕES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% --- Questão 1 ---
+\section*{Questão 1}
+\textit{Para cada uma das distribuições de probabilidade abaixo escreva a função de probabilidade ou densidade de probabilidade, identifique o suporte, a esperança, a variância, os parâmetros e o espaço paramétrico.}
+
+\begin{enumerate}
+    % a) Distribuição Poisson
+    \item[\textbf{a)}] \textbf{Distribuição Poisson de parâmetro $\lambda$}
+        \begin{itemize}
+            \item \textbf{Função de Probabilidade (FMP):} $P(X=k) = \frac{e^{-\lambda}\lambda^k}{k!}$
+            \item \textbf{Suporte:} $S = \{0, 1, 2, \dots\}$
+            \item \textbf{Esperança:} $E[X] = \lambda$
+            \item \textbf{Variância:} $Var(X) = \lambda$
+            \item \textbf{Parâmetro:} $\lambda$ (taxa média de ocorrência)
+            \item \textbf{Espaço Paramétrico:} $\lambda > 0$
+        \end{itemize}
+
+    % b) Distribuição Binomial
+    \item[\textbf{b)}] \textbf{Distribuição Binomial de parâmetros $n$ e $p$}
+        \begin{itemize}
+            \item \textbf{Função de Probabilidade (FMP):} $P(X=k) = \binom{n}{k} p^k (1-p)^{n-k}$
+            \item \textbf{Suporte:} $S = \{0, 1, 2, \dots, n\}$
+            \item \textbf{Esperança:} $E[X] = np$
+            \item \textbf{Variância:} $Var(X) = np(1-p)$
+            \item \textbf{Parâmetros:} $n$ (número de ensaios) e $p$ (probabilidade de sucesso)
+            \item \textbf{Espaço Paramétrico:} $n \in \{1, 2, \dots\}$, $p \in [0, 1]$
+        \end{itemize}
+
+    % c) Distribuição Exponencial
+    \item[\textbf{c)}] \textbf{Distribuição Exponencial de parâmetro $\lambda$}
+        \begin{itemize}
+            \item \textbf{Função de Densidade de Probabilidade (FDP):} $f(x) = \lambda e^{-\lambda x}$
+            \item \textbf{Suporte:} $S = \{x \in \mathbb{R} \mid x \ge 0\}$
+            \item \textbf{Esperança:} $E[X] = \frac{1}{\lambda}$
+            \item \textbf{Variância:} $Var(X) = \frac{1}{\lambda^2}$
+            \item \textbf{Parâmetro:} $\lambda$ (taxa de ocorrência)
+            \item \textbf{Espaço Paramétrico:} $\lambda > 0$
+        \end{itemize}
+
+    % d) Distribuição Normal
+    \item[\textbf{d)}] \textbf{Distribuição Normal de parâmetros $\mu$ e $\sigma^2$}
+        \begin{itemize}
+            \item \textbf{Função de Densidade de Probabilidade (FDP):}
+            \[
+                f(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)
+            \]
+            \item \textbf{Suporte:} $S = \{x \in \mathbb{R}\}$
+            \item \textbf{Esperança:} $E[X] = \mu$
+            \item \textbf{Variância:} $Var(X) = \sigma^2$
+            \item \textbf{Parâmetros:} $\mu$ (média) e $\sigma^2$ (variância, \textbf{com} $\sigma^2 > 0$)
+            \item \textbf{Espaço Paramétrico:} $\mu \in \mathbb{R}$, $\sigma^2 > 0$
+        \end{itemize}
+
+    % e) Distribuição Gama
+    \item[\textbf{e)}] \textbf{Distribuição Gama de parâmetros $\alpha$ e $\beta$}
+        (Parametrização forma-taxa)
+        \begin{itemize}
+            \item \textbf{Função de Densidade de Probabilidade (FDP):} $f(x) = \frac{\beta^\alpha}{\Gamma(\alpha)} x^{\alpha-1} e^{-\beta x}$
+            \item \textbf{Suporte:} $S = \{x \in \mathbb{R} \mid x > 0\}$
+            \item \textbf{Esperança:} $E[X] = \frac{\alpha}{\beta}$
+            \item \textbf{Variância:} $Var(X) = \frac{\alpha}{\beta^2}$
+            \item \textbf{Parâmetros:} $\alpha$ (forma) e $\beta$ (taxa)
+            \item \textbf{Espaço Paramétrico:} $\alpha > 0$, $\beta > 0$
+        \end{itemize}
+
+    % f) Distribuição Uniforme
+    \item[\textbf{f)}] \textbf{Distribuição Uniforme de parâmetros $a$ e $b$}
+        \begin{itemize}
+            \item \textbf{Função de Densidade de Probabilidade (FDP):} $f(x) = \frac{1}{b-a}$
+            \item \textbf{Suporte:} $S = \{x \in \mathbb{R} \mid a \le x \le b\}$
+            \item \textbf{Esperança:} $E[X] = \frac{a+b}{2}$
+            \item \textbf{Variância:} $Var(X) = \frac{(b-a)^2}{12}$
+            \item \textbf{Parâmetros:} $a$ (mínimo) e $b$ (máximo)
+            \item \textbf{Espaço Paramétrico:} $a, b \in \mathbb{R}$ com $a < b$
+        \end{itemize}
+\end{enumerate}
+
+\newpage % Começa a próxima questão em uma nova página
+
+% --- Questão 2 ---
+\section*{Questão 2}
+\textit{Para cada uma das situações abaixo proponha uma distribuição de probabilidade adequada e justifique sua escolha baseado em aspectos do fenômeno aleatório e características da distribuição. Descreva quais aspectos da inferência estatística podem estar associados com cada uma das situações mencionadas.}
+
+\begin{enumerate}
+    % a) Linha de produção
+    \item[\textbf{a)}] \textbf{Situação:} Itens em uma linha de produção classificados como "conforme" ou "não-conforme".
+        \begin{itemize}
+            \item \textbf{Distribuição Proposta:} Distribuição Binomial.
+            \item \textbf{Justificativa:} O fenômeno consiste em um número fixo ($n$) de ensaios (itens inspecionados), onde cada ensaio tem apenas dois resultados possíveis (conforme ou não-conforme). Assumindo que a probabilidade ($p$) de um item ser não-conforme é constante e que os itens são independentes, a Binomial é o modelo exato para contar o número total de itens não-conformes.
+            \item \textbf{Aspectos da Inferência:} O principal interesse seria estimar o parâmetro $p$, a proporção de itens defeituosos na produção. Poderíamos construir um intervalo de confiança para $p$ ou realizar um teste de hipótese para verificar se $p$ está acima de um certo limite de qualidade.
+        \end{itemize}
+
+    % c) Número de carros
+    \item[\textbf{c)}] \textbf{Situação:} Número de carros que chegam a um caixa automático durante uma hora.
+        \begin{itemize}
+            \item \textbf{Distribuição Proposta:} Distribuição de Poisson.
+            \item \textbf{Justificativa:} Estamos contando o número de ocorrências de um evento (chegada de um carro) em um intervalo fixo (uma hora). Se as chegadas ocorrem de forma independente e a uma taxa média constante, a distribuição de Poisson é o modelo padrão para este tipo de processo de contagem.
+            \item \textbf{Aspectos da Inferência:} O objetivo seria estimar o parâmetro $\lambda$, a taxa média de chegada de carros por hora. Essa estimativa é crucial para a teoria das filas, permitindo ao banco otimizar o atendimento, por exemplo, decidindo se precisa de mais caixas para evitar longas esperas.
+        \end{itemize}
+
+    % e) Medidas antropométricas
+    \item[\textbf{e)}] \textbf{Situação:} Medidas de peso e altura de crianças do nono ano.
+        \begin{itemize}
+            \item \textbf{Distribuição Proposta:} Distribuição Normal (ou Bivariada Normal).
+            \item \textbf{Justificativa:} Medidas antropométricas como peso e altura em uma população homogênea tendem a seguir uma distribuição em forma de sino, simétrica em torno da média. A distribuição Normal é o modelo clássico para tais variáveis contínuas devido ao Teorema Central do Limite, que sugere que variáveis influenciadas por múltiplos fatores aleatórios convergem para a normalidade. Para modelar peso e altura juntos, uma Normal Bivariada seria adequada para capturar também a correlação entre as duas medidas.
+            \item \textbf{Aspectos da Inferência:} A inferência se concentraria em estimar a média ($\mu$) e a variância ($\sigma^2$) do peso e da altura na população de estudantes. Com esses parâmetros, seria possível construir curvas de crescimento, definir "faixas de normalidade" e projetar equipamentos escolares (como carteiras e cadeiras) adequados para a maioria dos alunos.
+        \end{itemize}
+
+    % f) Tempo de funcionamento de equipamento
+    \item[\textbf{f)}] \textbf{Situação:} Número de horas que um equipamento funciona antes de apresentar defeitos.
+        \begin{itemize}
+            \item \textbf{Distribuição Proposta:} Distribuição Exponencial ou Weibull.
+            \item \textbf{Justificativa:} A variável de interesse é o tempo até a ocorrência de um evento (falha), que é contínua e positiva. A distribuição Exponencial é o modelo mais simples, útil se a taxa de falha for constante ao longo do tempo (ou seja, o equipamento não envelhece). A distribuição de Weibull é mais flexível e realista, pois permite que a taxa de falha aumente, diminua ou permaneça constante, modelando melhor o desgaste ou defeitos de fabricação.
+            \item \textbf{Aspectos da Inferência:} O objetivo é estimar os parâmetros da distribuição (a taxa $\lambda$ para a Exponencial, ou os parâmetros de forma e escala para a Weibull). Com base no modelo ajustado, pode-se calcular a probabilidade de um equipamento falhar antes de um tempo $t$, o que é fundamental para definir um prazo de garantia que equilibre a satisfação do cliente e os custos para a empresa.
+        \end{itemize}
+\end{enumerate}
+
+\end{document}

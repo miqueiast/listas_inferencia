@@ -1,0 +1,28 @@
+# Ignorar a pasta do ambiente virtual
+venv/
+.venv/
+
+# Ignorar arquivos de cache e compilados do Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignorar arquivos de configuração de IDEs
+.vscode/
+.idea/
+
+# Ignorar arquivos de variáveis de ambiente (contém senhas e chaves!)
+.env
+*.env
+
+# Ignorar arquivos de log
+*.log
+
+#Ignorar arquivos LaTex
+.aux
+.fdb_latexmk
+.fls
+.sybctex.gz
+.toc
+.out
