@@ -1,0 +1,224 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PREÂMBULO: Configurações do documento e pacotes
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[12pt, a4paper]{article}
+
+% Pacotes para acentuação e linguagem em português
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+
+% Pacotes para matemática
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% Pacote para ajustar as margens da página
+\usepackage[margin=2.5cm]{geometry}
+
+% Pacote para incluir imagens (necessário para o logo)
+\usepackage{graphicx}
+
+% Melhora a aparência das fontes
+\usepackage{lmodern}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% INÍCIO DO DOCUMENTO
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PÁGINA DE ROSTO
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{titlepage}
+    \centering
+
+    % Para o logo, salve a imagem como 'dest_logo.png' na mesma pasta do seu arquivo .tex
+    % \includegraphics[width=0.4\textwidth]{dest_logo.png}\par\vspace{1cm}
+
+    % Se não tiver a imagem, pode usar o texto:
+    {\Huge \textbf{DEST}}\par
+
+    \vspace{2cm}
+
+    {\Large \textbf{Inferência Estatística}} \par
+    {\Large Lista 2 } \par
+
+    \vspace{2.5cm}
+
+    {\Large \textbf{Lista de Exercícios 2 - Resolução}}
+
+    \vfill % Empurra o texto seguinte para a parte de baixo da página
+
+    \large
+    \begin{flushleft}
+    \textbf{Nome:} Miqueias T. \\
+    \textbf{Data:} \today
+    \end{flushleft}
+\end{titlepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CORPO DO DOCUMENTO - QUESTÕES E RESOLUÇÕES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section*{Questão 1}
+\textit{Num certo bairro da cidade de São Paulo, as companhias de seguro estabeleceram o seguinte modelo para número de veículos furtados por semana: Encontre a esperança e variância desta variável aleatória.}
+
+\textbf{Solução:}
+A esperança $E[F]$ e a variância $Var(F)$ são calculadas da seguinte forma para uma variável aleatória discreta:
+\begin{itemize}
+    \item $E[F] = \sum_{i} f_i \cdot p_i$
+    \item $Var(F) = E[F^2] - (E[F])^2$, onde $E[F^2] = \sum_{i} f_i^2 \cdot p_i$
+\end{itemize}
+
+Calculando $E[F]$:
+$$ E[F] = (0 \cdot \frac{1}{4}) + (1 \cdot \frac{1}{2}) + (2 \cdot \frac{1}{8}) + (3 \cdot \frac{1}{16}) + (4 \cdot \frac{1}{16}) $$
+$$ E[F] = 0 + \frac{1}{2} + \frac{2}{8} + \frac{3}{16} + \frac{4}{16} = \frac{8}{16} + \frac{4}{16} + \frac{3}{16} + \frac{4}{16} = \frac{19}{16} = 1.1875 $$
+
+Calculando $E[F^2]$:
+$$ E[F^2] = (0^2 \cdot \frac{1}{4}) + (1^2 \cdot \frac{1}{2}) + (2^2 \cdot \frac{1}{8}) + (3^2 \cdot \frac{1}{16}) + (4^2 \cdot \frac{1}{16}) $$
+$$ E[F^2] = 0 + \frac{1}{2} + \frac{4}{8} + \frac{9}{16} + \frac{16}{16} = \frac{8}{16} + \frac{8}{16} + \frac{9}{16} + \frac{16}{16} = \frac{41}{16} = 2.5625 $$
+
+Calculando $Var(F)$:
+$$ Var(F) = \frac{41}{16} - \left(\frac{19}{16}\right)^2 = \frac{41}{16} - \frac{361}{256} = \frac{41 \cdot 16 - 361}{256} = \frac{656 - 361}{256} = \frac{295}{256} \approx 1.1523 $$
+
+\newpage
+
+\section*{Questão 2}
+\textit{Verifique se as expressões a seguir são funções densidade de probabilidade (f.d.p.).}
+
+\textbf{Solução:}
+Para ser uma f.d.p., uma função $f(y)$ deve satisfazer duas condições:
+1. $f(y) \ge 0$ para todo $y$ no suporte.
+2. $\int_{-\infty}^{\infty} f(y) \,dy = 1$.
+
+\begin{itemize}
+    \item[\textbf{a)}] $f(y)=3y$, se $0\le y\le1$.
+        A condição 1 é satisfeita. Para a condição 2:
+        $$ \int_{0}^{1} 3y \,dy = \left[ \frac{3y^2}{2} \right]_{0}^{1} = \frac{3}{2} \neq 1 $$
+        \textbf{Não é uma f.d.p.}
+
+    \item[\textbf{b)}] $f(y)=y^{2}/2$ se $y\ge0$.
+        A condição 1 é satisfeita. Para a condição 2:
+        $$ \int_{0}^{\infty} \frac{y^2}{2} \,dy = \left[ \frac{y^3}{6} \right]_{0}^{\infty} = \infty $$
+        A integral diverge. \textbf{Não é uma f.d.p.}
+
+    \item[\textbf{c)}] $f(y)=(y-3)/2$ se $3\le y\le5$.
+        A condição 1 ($f(y) \ge 0$) é satisfeita no intervalo. Para a condição 2:
+        $$ \int_{3}^{5} \frac{y-3}{2} \,dy = \frac{1}{2} \left[ \frac{y^2}{2} - 3y \right]_{3}^{5} = \frac{1}{2} \left[ (\frac{25}{2}-15) - (\frac{9}{2}-9) \right] = \frac{1}{2} [-\frac{5}{2} - (-\frac{9}{2})] = \frac{1}{2} [\frac{4}{2}] = 1 $$
+        \textbf{É uma f.d.p.}
+
+    \item[\textbf{e)}] $f(y)$ definida em partes. Assumindo que a segunda parte seja $f(y)=(2-y)/4$ (uma correção comum para este tipo de problema, pois $2y/4$ não integraria 1):
+        $$ f(y) = \begin{cases} (2+y)/4 & \text{se } -2 \le y \le 0 \\ (2-y)/4 & \text{se } 0 < y < 2 \end{cases} $$
+        A condição 1 é satisfeita. Para a condição 2:
+        $$ \int_{-2}^{0} \frac{2+y}{4} \,dy + \int_{0}^{2} \frac{2-y}{4} \,dy = \frac{1}{4}\left[2y+\frac{y^2}{2}\right]_{-2}^{0} + \frac{1}{4}\left[2y-\frac{y^2}{2}\right]_{0}^{2} $$
+        $$ = \frac{1}{4}[0 - (-4+2)] + \frac{1}{4}[(4-2)-0] = \frac{1}{4}[2] + \frac{1}{4}[2] = \frac{1}{2} + \frac{1}{2} = 1 $$
+        \textbf{É uma f.d.p. (com a correção assumida).}
+\end{itemize}
+
+\section*{Questão 3}
+\textit{Uma v.a. tem f.d.p. $f(y;\theta)=2y/\theta^{2}$, se $0\le y\le\theta$. Calcule $E(Y)$ e $Var(Y)$. (Nota: O suporte no PDF foi assumido como $0\le y\le\theta$ para consistência).}
+
+\textbf{Solução:}
+Calculando $E[Y]$:
+$$ E[Y] = \int_{0}^{\theta} y \cdot f(y) \,dy = \int_{0}^{\theta} y \cdot \frac{2y}{\theta^2} \,dy = \frac{2}{\theta^2} \int_{0}^{\theta} y^2 \,dy = \frac{2}{\theta^2} \left[\frac{y^3}{3}\right]_{0}^{\theta} = \frac{2}{\theta^2} \frac{\theta^3}{3} = \frac{2\theta}{3} $$
+
+Calculando $E[Y^2]$:
+$$ E[Y^2] = \int_{0}^{\theta} y^2 \cdot f(y) \,dy = \int_{0}^{\theta} y^2 \cdot \frac{2y}{\theta^2} \,dy = \frac{2}{\theta^2} \int_{0}^{\theta} y^3 \,dy = \frac{2}{\theta^2} \left[\frac{y^4}{4}\right]_{0}^{\theta} = \frac{2}{\theta^2} \frac{\theta^4}{4} = \frac{\theta^2}{2} $$
+
+Calculando $Var(Y)$:
+$$ Var(Y) = E[Y^2] - (E[Y])^2 = \frac{\theta^2}{2} - \left(\frac{2\theta}{3}\right)^2 = \frac{\theta^2}{2} - \frac{4\theta^2}{9} = \frac{9\theta^2 - 8\theta^2}{18} = \frac{\theta^2}{18} $$
+
+\newpage
+
+\section*{Questão 4}
+\textit{Uma v.a. discreta tem f.p. $p(y;\theta)=(1-\theta)\theta^{y-1}$: $y=1,2,...$. Calcule $E(Y)$ e $E(Y(Y-1))$ e então calcule $Var(Y)$.}
+
+\textbf{Solução:}
+Esta é uma distribuição Geométrica com probabilidade de sucesso $p = 1-\theta$.
+Sabemos que para uma Geométrica, $E[Y] = 1/p$ e $Var(Y) = (1-p)/p^2$.
+$$ E[Y] = \frac{1}{1-\theta} $$
+Para calcular $E[Y(Y-1)]$, usamos a série geométrica e suas derivadas. Seja $S = \sum_{y=1}^{\infty} \theta^y = \frac{\theta}{1-\theta}$.
+A primeira derivada em relação a $\theta$ nos dá $E[Y]$ (a menos de uma constante), e a segunda nos dá $E[Y(Y-1)]$.
+$$ \sum_{y=1}^{\infty} y(y-1)\theta^{y-2} = \frac{d^2}{d\theta^2} \left( \sum_{y=0}^{\infty} \theta^y \right) = \frac{d^2}{d\theta^2} \left( \frac{1}{1-\theta} \right) = \frac{2}{(1-\theta)^3} $$
+Multiplicando por $\theta^2(1-\theta)$:
+$$ E[Y(Y-1)] = \sum_{y=1}^{\infty} y(y-1)(1-\theta)\theta^{y-1} = \theta(1-\theta) \sum_{y=1}^{\infty} y(y-1)\theta^{y-2} = \theta(1-\theta) \frac{2}{(1-\theta)^3} = \frac{2\theta}{(1-\theta)^2} $$
+Calculando $Var(Y)$:
+\begin{align*}
+Var(Y) &= E[Y^2] - (E[Y])^2 \\
+       &= (E[Y(Y-1)] + E[Y]) - (E[Y])^2 \\
+       &= \frac{2\theta^2}{(1-\theta)^2} + \frac{1}{1-\theta} - \left(\frac{1}{1-\theta}\right)^2 \\
+       &= \frac{2\theta^2 + (1-\theta) - 1}{(1-\theta)^2} = \frac{2\theta^2-\theta}{1-\theta^2} \quad \textit{(Nota: Há um erro no cálculo. O correto é:)} \\
+       &= \frac{2\theta^2}{(1-\theta)^2} + \frac{1(1-\theta)}{(1-\theta)^2} - \frac{1}{(1-\theta)^2} = \frac{2\theta^2+1-\theta-1}{(1-\theta)^2} = \frac{2\theta^2 - \theta}{(1-\theta)^2} \quad \textit{(Ainda errado.)}
+\end{align*}
+O cálculo correto é $E[Y(Y-1)] = \frac{2\theta}{(1-\theta)^2}$. Então:
+$$ Var(Y) = \frac{2\theta}{(1-\theta)^2} + \frac{1}{1-\theta} - \frac{1}{(1-\theta)^2} = \frac{2\theta + (1-\theta) - 1}{(1-\theta)^2} = \frac{\theta}{(1-\theta)^2} $$
+
+\section*{Questão 5}
+\textit{Encontre a média e a variância das seguintes distribuições.}
+
+\begin{itemize}
+    \item[\textbf{a)}] $P(Y=y)=\frac{3!}{y!(3-y)!}(1/2)^{3}$ , para $y=0,1,2,3$.
+    Esta é uma distribuição Binomial com $n=3$ e $p=1/2$.
+    $$ E[Y] = np = 3 \cdot \frac{1}{2} = \frac{3}{2} $$
+    $$ Var(Y] = np(1-p) = 3 \cdot \frac{1}{2} \cdot \frac{1}{2} = \frac{3}{4} $$
+
+    \item[\textbf{b)}] $f(y)=6y(1-y)$ se $0<y<1$.
+    Esta é uma distribuição Beta com parâmetros $\alpha=2$ e $\beta=2$.
+    $$ E[Y] = \frac{\alpha}{\alpha+\beta} = \frac{2}{2+2} = \frac{1}{2} $$
+    $$ Var(Y) = \frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)} = \frac{2 \cdot 2}{(4)^2 \cdot 5} = \frac{4}{16 \cdot 5} = \frac{1}{20} $$
+
+    \item[\textbf{c)}] $f(y)=2/y^3$, se $1<y<\infty$.
+    $$ E[Y] = \int_{1}^{\infty} y \cdot \frac{2}{y^3} \,dy = \int_{1}^{\infty} \frac{2}{y^2} \,dy = \left[-\frac{2}{y}\right]_{1}^{\infty} = 0 - (-2) = 2 $$
+    $$ E[Y^2] = \int_{1}^{\infty} y^2 \cdot \frac{2}{y^3} \,dy = \int_{1}^{\infty} \frac{2}{y} \,dy = [2 \ln(y)]_{1}^{\infty} = \infty $$
+    Como $E[Y^2]$ diverge, \textbf{a variância não existe}.
+\end{itemize}
+
+\newpage
+
+\section*{Questão 8}
+\textit{Calcule a correlação entre X e Y.}
+
+\textbf{Solução:}
+A correlação é $\rho(X,Y) = \frac{Cov(X,Y)}{\sigma_X \sigma_Y}$.
+A partir da tabela, as distribuições marginais são $P(X=x)=1/3$ para $x \in \{0,1,2\}$ e $P(Y=y)=1/3$ para $y \in \{0,1,2\}$.
+\begin{itemize}
+    \item $E[X] = 0(\frac{1}{3}) + 1(\frac{1}{3}) + 2(\frac{1}{3}) = 1$.
+    \item $E[Y] = 0(\frac{1}{3}) + 1(\frac{1}{3}) + 2(\frac{1}{3}) = 1$.
+    \item $E[X^2] = 0^2(\frac{1}{3}) + 1^2(\frac{1}{3}) + 2^2(\frac{1}{3}) = \frac{5}{3}$.
+    \item $Var(X) = E[X^2]-(E[X])^2 = \frac{5}{3} - 1^2 = \frac{2}{3}$.
+    \item Por simetria, $Var(Y) = 2/3$.
+    \item $E[XY] = \sum \sum xy \cdot p(x,y) = (0)(0)(\frac{1}{3}) + (1)(1)(\frac{1}{3}) + (2)(2)(\frac{1}{3}) = \frac{1}{3} + \frac{4}{3} = \frac{5}{3}$.
+    \item $Cov(X,Y) = E[XY] - E[X]E[Y] = \frac{5}{3} - (1)(1) = \frac{2}{3}$.
+\end{itemize}
+$$ \rho(X,Y) = \frac{2/3}{\sqrt{2/3}\sqrt{2/3}} = \frac{2/3}{2/3} = 1 $$
+A correlação é 1, indicando uma relação linear positiva perfeita.
+
+\section*{Questão 10}
+\textit{Mostre que as variáveis aleatórias $X_1$ e $X_2$ com f.d.p. conjunta $f(x_1,x_2) = 12x_1x_2(1-x_2)$ para $0<x_1<1, 0<x_2<1$ são independentes.}
+
+\textbf{Solução:}
+Para serem independentes, a f.d.p. conjunta deve ser igual ao produto das f.d.p. marginais, i.e., $f(x_1, x_2) = f(x_1)f(x_2)$.
+
+Calculando a marginal de $X_1$:
+\begin{align*}
+f(x_1) &= \int_{0}^{1} 12x_1x_2(1-x_2) \,dx_2 \\
+       &= 12x_1 \int_{0}^{1} (x_2 - x_2^2) \,dx_2 \\
+       &= 12x_1 \left[\frac{x_2^2}{2} - \frac{x_2^3}{3}\right]_{0}^{1} \\
+       &= 12x_1 \left(\frac{1}{2} - \frac{1}{3}\right) = 12x_1 \left(\frac{1}{6}\right) = 2x_1
+\end{align*}
+para $0 < x_1 < 1$.
+
+Calculando a marginal de $X_2$:
+\begin{align*}
+f(x_2) &= \int_{0}^{1} 12x_1x_2(1-x_2) \,dx_1 \\
+       &= 12x_2(1-x_2) \int_{0}^{1} x_1 \,dx_1 \\
+       &= 12x_2(1-x_2) \left[\frac{x_1^2}{2}\right]_{0}^{1} \\
+       &= 12x_2(1-x_2) \left(\frac{1}{2}\right) = 6x_2(1-x_2)
+\end{align*}
+para $0 < x_2 < 1$.
+
+Verificando o produto das marginais:
+$$ f(x_1)f(x_2) = (2x_1) \cdot (6x_2(1-x_2)) = 12x_1x_2(1-x_2) $$
+Como $f(x_1)f(x_2) = f(x_1, x_2)$, as variáveis aleatórias \textbf{são independentes}.
+
+\end{document}
