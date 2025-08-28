@@ -1,0 +1,10 @@
+Olá pessoal, tudo bem?
+
+Estamos resolvendo as listas de Inferência no LaTeX.
+
+Importante!
+
+Nem todos os exercícios estão resolvidos e não conseguimos revisar todos os que foram postados ainda. Vamos atualizando o que for atualizado.
+
+
+Objetivo: ajudar a todos a estudar para a Disciplina! Tente fazer os exercícios sozinho.
