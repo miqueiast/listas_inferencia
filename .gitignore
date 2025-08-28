@@ -30,3 +30,5 @@ __pycache__/
 *.snm
 *.synctex.gz
 *.toc
+*.fbd_latexmk
+lista_5.fdb_latexmk
