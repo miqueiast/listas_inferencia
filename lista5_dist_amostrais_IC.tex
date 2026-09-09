@@ -1,0 +1,386 @@
+\documentclass[a4paper,8pt]{extarticle}
+
+%============================ PACOTES =============================
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+% Carrega hifenização em português apenas se o babel-portugues estiver instalado
+\IfFileExists{portuges.ldf}{\usepackage[brazilian]{babel}}{}
+\usepackage[margin=0.5cm,landscape]{geometry}
+\usepackage{multicol}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage[expansion=false]{microtype}
+
+%========================= AJUSTES DE LAYOUT ======================
+\setlength{\columnsep}{0.38cm}
+\setlength{\columnseprule}{0.2pt}
+\renewcommand{\columnseprulecolor}{\color{gray!45}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+\setlength{\emergencystretch}{3em}
+\hyphenpenalty=50
+\tolerance=9999
+\pagestyle{plain}
+
+\definecolor{azul}{RGB}{28,58,110}
+\definecolor{vinho}{RGB}{140,30,50}
+\definecolor{verde}{RGB}{20,95,70}
+\definecolor{cinza}{RGB}{240,240,244}
+
+\titleformat{\section}{\normalfont\bfseries\small\color{azul}}{\thesection.}{0.4em}{}
+\titlespacing*{\section}{0pt}{6pt}{2pt}
+
+\setlist[itemize]{leftmargin=0.9em,itemsep=0.5pt,topsep=1pt,parsep=0pt}
+\setlist[enumerate]{leftmargin=1.2em,itemsep=0.5pt,topsep=1pt,parsep=0pt}
+
+\newcommand{\tit}[1]{\vspace{2pt}\textcolor{azul}{\rule{\linewidth}{0.6pt}}\\[1pt]\textbf{\textcolor{azul}{#1}}\\[1pt]}
+\newcommand{\mac}[1]{\textcolor{verde}{\textbf{Macete:}} #1\par}
+\newcommand{\arm}[1]{\textcolor{vinho}{\textbf{Armadilha:}} #1\par}
+\newcommand{\ferr}[1]{\textbf{Ferramentas:} #1\par}
+\newcommand{\obj}[1]{\textbf{Objetivo:} #1\par}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\ind}{\stackrel{iid}{\sim}}
+\newcommand{\R}[1]{\texttt{\footnotesize #1}}
+
+%================================================================
+\begin{document}
+\raggedright
+\footnotesize
+
+\begin{center}
+{\normalsize\bfseries\color{azul} CE309 — Inferência Estatística: Distribuições Amostrais e Intervalos de Confiança}\\[1pt]
+{\scriptsize\itshape Resumo teórico exaustivo + guia de resolução (sem gabarito) — DEST/UFPR — Profa.\ Amanda M.\ F.\ Mendes}
+\end{center}
+\vspace{-4pt}
+
+\begin{multicols*}{5}
+\scriptsize
+
+%==================================================================
+%                       PARTE I — TEORIA
+%==================================================================
+\begin{center}\colorbox{cinza}{\parbox{0.94\linewidth}{\centering\bfseries\color{azul} PARTE I — RESUMO TEÓRICO}}\end{center}
+
+\tit{1. Vocabulário e objetos básicos}
+\begin{itemize}
+\item \textbf{Parâmetro} ($\theta$): número fixo e desconhecido da população ($\mu$, $\sigma^2$, $p$, $\mu_A-\mu_B$, $\sigma_A^2/\sigma_B^2$).
+\item \textbf{Estatística / estimador} ($\hat\theta$): função da amostra; é variável aleatória. \textbf{Estimativa}: valor numérico observado.
+\item \textbf{Distribuição amostral}: distribuição de probabilidade do estimador ao longo de todas as amostras possíveis de tamanho $n$.
+\item \textbf{Erro padrão}: $EP(\hat\theta)=\sqrt{\Var(\hat\theta)}$. Quando $EP$ é calculado substituindo parâmetros por estimativas, chama-se \emph{erro padrão estimado}.
+\item \textbf{Estimação pontual} devolve um número; \textbf{estimação intervalar} devolve uma faixa acompanhada de um grau de confiança.
+\end{itemize}
+
+\tit{2. Estatísticas amostrais fundamentais}
+\[\bar Y=\frac1n\sum_{i=1}^n Y_i,\qquad S^2=\frac{1}{n-1}\sum_{i=1}^n (Y_i-\bar Y)^2\]
+\[\hat p=\frac{X}{n}\ \ (X=\text{nº de sucessos}).\]
+Fórmula computacional útil: $\sum (Y_i-\bar Y)^2=\sum Y_i^2-n\bar Y^2$.
+O divisor $n-1$ existe para tornar $S^2$ não viesado: $\E[S^2]=\sigma^2$. Atenção: $\E[S]\ne\sigma$ (a raiz introduz viés).
+
+\tit{3. Distribuição amostral da média}
+Com $Y_1,\dots,Y_n$ i.i.d.\ ($\mu,\sigma^2$):
+\[\E[\bar Y]=\mu,\qquad \Var(\bar Y)=\frac{\sigma^2}{n},\qquad EP=\frac{\sigma}{\sqrt n}.\]
+\begin{itemize}
+\item População normal $\Rightarrow$ $\bar Y\sim N(\mu,\sigma^2/n)$ \emph{exatamente}, para todo $n$.
+\item População qualquer, $n$ grande $\Rightarrow$ TLC: $\bar Y\approx N(\mu,\sigma^2/n)$ (regra prática $n\ge30$).
+\item Aumentar $n$ não muda o centro; reduz a dispersão na razão $1/\sqrt n$.
+\end{itemize}
+\textbf{Correção de população finita} (amostragem sem reposição de população de tamanho $N$):
+\[\Var(\bar Y)=\frac{\sigma^2}{n}\cdot\frac{N-n}{N-1}.\]
+Regra prática: se $n/N\le 0{,}05$, o fator é desprezível e pode ser omitido.
+
+\tit{4. As duas padronizações da média}
+\textbf{(i) $\sigma$ conhecido:}
+\[Z=\frac{\bar Y-\mu}{\sigma/\sqrt n}\sim N(0,1).\]
+\textbf{(ii) $\sigma$ desconhecido, substituído por $S$:}
+\[T=\frac{\bar Y-\mu}{S/\sqrt n}\sim t_{n-1}\quad(\text{população normal}).\]
+A troca de $\sigma$ (constante) por $S$ (v.a.) acrescenta variabilidade: por isso a $t$ tem caudas mais pesadas que a normal. Para $n$ grande ($n\ge30$ ou 40), $t_{n-1}\approx N(0,1)$ e as duas rotas praticamente coincidem.
+
+\tit{5. Distribuição $t$ de Student}
+Definição: $Z\sim N(0,1)$, $V\sim\chi^2_\nu$, $Z\perp V$:
+\[T=\frac{Z}{\sqrt{V/\nu}}\sim t_\nu .\]
+\begin{itemize}
+\item Simétrica em torno de 0: $P(T<-t)=P(T>t)$ e
+\[P(-t\le T\le t)=1-2P(T>t).\]
+\item $\E[T]=0$ ($\nu>1$); $\Var(T)=\nu/(\nu-2)$ ($\nu>2$).
+\item Quantis: $t_{\nu,1-\alpha}=-t_{\nu,\alpha}$; $t_\nu\to N(0,1)$ quando $\nu\to\infty$.
+\item $T^2\sim F_{(1,\nu)}$.
+\item Em problemas de média com $S$: gl $=n-1$.
+\end{itemize}
+
+\tit{6. Distribuição Qui-quadrado e a variância amostral}
+Se $Z_1,\dots,Z_\nu\ind N(0,1)$: $\sum Z_i^2\sim\chi^2_\nu$. Suporte $(0,\infty)$, assimétrica à direita, $\E=\nu$, $\Var=2\nu$; aditiva.
+\textbf{Resultado central do módulo} (população normal):
+\[Q=\frac{(n-1)S^2}{\sigma^2}\sim \chi^2_{n-1},\]
+e $\bar Y\perp S^2$. Toda pergunta sobre $S^2$ vira pergunta sobre $\chi^2_{n-1}$:
+\[P(S^2>c)=P\!\Big(\chi^2_{n-1}>\frac{(n-1)c}{\sigma^2}\Big)\]
+\[P(S^2<c)=P\!\Big(\chi^2_{n-1}<\frac{(n-1)c}{\sigma^2}\Big).\]
+Como a $\chi^2$ \emph{não} é simétrica, as duas caudas devem ser buscadas separadamente; não existe $q_{1-\alpha}=-q_\alpha$.
+
+\tit{7. Distribuição $F$ e razão de variâncias}
+$V_1\sim\chi^2_{\nu_1}$, $V_2\sim\chi^2_{\nu_2}$ independentes:
+\[F=\frac{V_1/\nu_1}{V_2/\nu_2}\sim F_{(\nu_1,\nu_2)} .\]
+Aplicando a duas amostras normais independentes:
+\[\frac{S_A^2/\sigma_A^2}{S_B^2/\sigma_B^2}\sim F_{(n_A-1,\ n_B-1)} .\]
+Se $\sigma_A^2=\sigma_B^2$, os parâmetros se cancelam e a própria razão observada $S_A^2/S_B^2$ segue $F_{(n_A-1,n_B-1)}$.
+\begin{itemize}
+\item A ordem dos gl importa: $F_{(14,19)}\ne F_{(19,14)}$.
+\item Reciprocidade: $1/F\sim F_{(\nu_2,\nu_1)}$ e
+\[F_{(\nu_1,\nu_2);\alpha}=\frac{1}{F_{(\nu_2,\nu_1);1-\alpha}}\]
+(essencial em tabelas que só trazem a cauda superior).
+\item $\E[F]=\nu_2/(\nu_2-2)$, próximo de 1 para $\nu_2$ grande — logo razões muito acima de 1 são evidência contra a igualdade de variâncias.
+\end{itemize}
+
+\tit{8. Diferença de duas médias independentes}
+Amostras independentes, populações normais:
+\[\bar Y_A-\bar Y_B\sim N\!\Big(\mu_A-\mu_B,\ \frac{\sigma_A^2}{n_A}+\frac{\sigma_B^2}{n_B}\Big).\]
+Note a \textbf{soma} das variâncias (independência), mesmo tratando-se de uma diferença. Padronização:
+\[Z=\frac{(\bar Y_A-\bar Y_B)-(\mu_A-\mu_B)}{\sqrt{\sigma_A^2/n_A+\sigma_B^2/n_B}}\sim N(0,1).\]
+Se as populações não forem normais mas $n_A,n_B$ forem grandes, o mesmo vale por TLC. Se $\sigma$'s forem desconhecidos, usa-se $t$ com variância combinada (\emph{pooled}) ou a aproximação de Welch — não necessário quando o enunciado fornece $\sigma_A$ e $\sigma_B$.
+
+\tit{9. Distribuição amostral da proporção}
+$X\sim\text{Bin}(n,p)$, $\hat p=X/n$:
+\[\E[\hat p]=p,\qquad \Var(\hat p)=\frac{p(1-p)}{n}.\]
+Aproximação normal válida quando $np\ge5$ e $n(1-p)\ge5$ (ou, na versão amostral, $n\hat p\ge5$ e $n(1-\hat p)\ge5$):
+\[Z=\frac{\hat p-p}{\sqrt{p(1-p)/n}}\approx N(0,1).\]
+
+\tit{10. Lógica do intervalo de confiança (quantidade pivotal)}
+Receita geral, válida para todos os casos:
+\begin{enumerate}
+\item Encontre uma \textbf{quantidade pivotal}: função dos dados e do parâmetro cuja distribuição \emph{não depende} do parâmetro (ex.: $Z$, $T$, $Q=\frac{(n-1)S^2}{\sigma^2}$, $F$).
+\item Escreva a afirmação probabilística com os quantis que deixam $\alpha/2$ em cada cauda, com $\gamma=1-\alpha$ o coeficiente de confiança.
+\item \textbf{Isole o parâmetro} no meio da desigualdade (manipulação algébrica).
+\item Substitua as estatísticas pelos valores observados: o resultado é o IC.
+\end{enumerate}
+Forma padrão dos intervalos simétricos:
+\[\hat\theta \pm (\text{valor crítico})\times EP(\hat\theta)\]
+\[e=(\text{valor crítico})\times EP\]
+\[\text{amplitude}=2e .\]
+
+\tit{11. IC para $\mu$ com $\sigma$ conhecido}
+\[IC[\mu;1-\alpha]=\bar y \pm z_{\alpha/2}\,\frac{\sigma}{\sqrt n}.\]
+Válido exatamente se a população é normal (qualquer $n$) e aproximadamente por TLC se $n$ é grande.
+Valores críticos mais usados:
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+$1-\alpha$ & $z_{\alpha/2}$\\
+\midrule
+80\% & 1,282\\
+90\% & 1,645\\
+95\% & 1,960\\
+99\% & 2,576\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\tit{12. IC para $\mu$ com $\sigma$ desconhecido}
+\[IC[\mu;1-\alpha]=\bar y \pm t_{n-1;\,\alpha/2}\,\frac{s}{\sqrt n}.\]
+Use sempre que apenas o desvio padrão \emph{amostral} $s$ estiver disponível. Para $n$ grande, $t_{n-1;\alpha/2}\approx z_{\alpha/2}$ e muitos livros já usam $z$ diretamente.
+
+\tit{13. IC para a proporção $p$}
+Versão \emph{otimista}:
+\[\hat p \pm z_{\alpha/2}\sqrt{\hat p(1-\hat p)/n}\ .\]
+Versão \emph{conservadora}:
+\[\hat p \pm z_{\alpha/2}\sqrt{0{,}25/n}\ .\]
+\begin{itemize}
+\item O \textbf{otimista} usa a própria estimativa $\hat p$ no erro padrão: intervalo mais estreito, mas depende de $\hat p$ ser boa aproximação de $p$.
+\item O \textbf{conservador} usa o pior caso $p(1-p)\le 1/4$ (máximo em $p=0{,}5$): intervalo mais largo, garante a confiança nominal para qualquer $p$.
+\item Verifique as condições de aproximação normal antes de usar qualquer um dos dois.
+\end{itemize}
+
+\tit{14. IC para a variância $\sigma^2$ (população normal)}
+Pivotal: $Q=\frac{(n-1)S^2}{\sigma^2}\sim\chi^2_{n-1}$. Isolando $\sigma^2$:
+Chame de $q_{\sup}$ o quantil de $\chi^2_{n-1}$ que deixa área $\alpha/2$ \emph{à direita} (o maior) e de $q_{\inf}$ o que deixa $\alpha/2$ \emph{à esquerda} (o menor). Então
+\[IC[\sigma^2;1-\alpha]=\left[\frac{(n-1)s^2}{q_{\sup}};\ \frac{(n-1)s^2}{q_{\inf}}\right].\]
+Em \R{R}: $q_{\inf}=$ \R{qchisq(alpha/2,n-1)} e $q_{\sup}=$ \R{qchisq(1-alpha/2,n-1)}. O maior quantil vai no denominador do \emph{menor} limite.
+\begin{itemize}
+\item A inversão ocorre porque $\sigma^2$ aparece no \emph{denominador} da pivotal: inverter uma desigualdade entre positivos troca o sentido.
+\item O intervalo é \textbf{assimétrico} em torno de $s^2$ — não se escreve na forma $\pm$.
+\item IC para $\sigma$: extraia a raiz quadrada dos dois limites.
+\end{itemize}
+
+\tit{15. Determinação do tamanho de amostra}
+Parte-se da margem de erro desejada $e$ e resolve-se para $n$:
+\[e=z_{\alpha/2}\frac{\sigma}{\sqrt n}\ \Longrightarrow\ n=\left(\frac{z_{\alpha/2}\,\sigma}{e}\right)^{2}\]
+\[\text{(proporção)}\quad n=\frac{z_{\alpha/2}^2\,\hat p(1-\hat p)}{e^2}\ \ \text{ou}\ \ \frac{z_{\alpha/2}^2\,(0{,}25)}{e^2}.\]
+\begin{itemize}
+\item \textbf{Sempre arredonde para cima} (o próximo inteiro), para não ficar abaixo da precisão exigida.
+\item Se $\sigma$ é desconhecido, usa-se $s$ de uma amostra piloto ou de estudo anterior.
+\item Quadruplicar $n$ divide a margem de erro por 2 (relação $1/\sqrt n$).
+\end{itemize}
+
+\tit{16. O que afeta a amplitude do IC}
+\[\text{amplitude}=2\,z_{\alpha/2}\frac{\sigma}{\sqrt n}\]
+\begin{itemize}
+\item $\uparrow$ confiança $\Rightarrow$ $\uparrow$ valor crítico $\Rightarrow$ IC \emph{mais largo} (mais confiança custa precisão).
+\item $\uparrow n$ $\Rightarrow$ IC \emph{mais estreito}, na razão $1/\sqrt n$.
+\item $\uparrow \sigma$ (população mais heterogênea) $\Rightarrow$ IC \emph{mais largo}.
+\item O \emph{centro} do IC é sempre a estimativa pontual (nos casos simétricos); mudar $n$ ou a confiança não muda o centro.
+\end{itemize}
+
+\tit{17. Interpretação correta de um IC}
+Seja $IC[\theta;\gamma]=[L_i;L_s]$ obtido de uma amostra.
+\begin{itemize}
+\item \textbf{Leitura correta (frequentista):} o \emph{procedimento} produz intervalos que contêm o parâmetro em $\gamma\times100\%$ das amostras repetidas de mesmo tamanho. Se sorteássemos 100 amostras e construíssemos 100 intervalos, esperaríamos que cerca de $\gamma\times100$ deles contivessem $\theta$.
+\item \textbf{Leitura incorreta:} “há $\gamma$ de probabilidade de $\theta$ estar neste intervalo”. Uma vez calculados, $L_i$ e $L_s$ são números fixos e $\theta$ é fixo: a probabilidade já é 0 ou 1. A incerteza está no \emph{método}, não no parâmetro.
+\item Outras leituras incorretas: dizer que $\gamma$\% dos \emph{dados} caem no intervalo; ou que $\gamma$\% das \emph{médias amostrais futuras} caem nele (isso seria um intervalo de predição).
+\item Valores fora do IC são pouco compatíveis com os dados observados naquele nível de confiança — daí a ponte com testes de hipóteses.
+\end{itemize}
+
+\tit{18. Probabilidades e quantis: tabela e software}
+\[P(Y>y)=1-F(y);\ \ P(a<Y<b)=F(b)-F(a)\]
+\[P(Y>y)=\alpha \iff P(Y\le y)=1-\alpha .\]
+Em \R{R}: \R{pnorm/qnorm}, \R{pt/qt}, \R{pchisq/qchisq}, \R{pf/qf}; use \R{lower.tail=FALSE} para caudas superiores. Exemplos: \R{qt(0.975, df=24)}, \R{qchisq(0.025, df=24)}, \R{pf(2.5, 14, 19, lower.tail=FALSE)}.
+Em tabelas impressas: normal e $t$ usam simetria; $\chi^2$ e $F$ exigem colunas específicas por cauda; interpole quando necessário.
+
+%==================================================================
+%                    PARTE II — GUIA (SEM GABARITO)
+%==================================================================
+\vspace{4pt}
+\begin{center}\colorbox{cinza}{\parbox{0.94\linewidth}{\centering\bfseries\color{azul} PARTE II — GUIA DE RESOLUÇÃO}}\end{center}
+\textit{Nenhum resultado numérico é fornecido: apenas o caminho.}
+
+\tit{Exercício 1 — Treinamento e produtividade ($n=25$)}
+\obj{Reconhecer que, com $\sigma$ desconhecido e população normal, a padronização da média usa a $t$ de Student.}
+\textbf{Tradução do enunciado:} população normal; $\mu=10$ (dado, mas veja abaixo); $\sigma$ \emph{desconhecido}; $n=25$; $s=6$; pede-se $P(|\bar Y-\mu|\le 5)$.
+\ferr{Seções 4(ii), 5.}
+Passo a passo:
+\begin{enumerate}
+\item Escreva o evento: “não diferir por mais do que 5\%” significa $|\bar Y-\mu|\le 5$, isto é, $-5\le \bar Y-\mu\le 5$.
+\item Como $\sigma$ é desconhecido, divida pelo erro padrão \emph{estimado} $s/\sqrt n$ e identifique a distribuição resultante e seus gl ($n-1$).
+\item Reescreva como $P(-t^\ast\le T\le t^\ast)$ com $t^\ast=5/(s/\sqrt n)$; calcule $t^\ast$ com $s=6$ e $n=25$.
+\item Use a simetria da $t$: $P(|T|\le t^\ast)=1-2P(T>t^\ast)$; obtenha a cauda com \R{pt(...,df=24,lower.tail=FALSE)} ou tabela.
+\item Interprete: a probabilidade é alta ou baixa? O que isso diz sobre a precisão de $\bar Y$ como estimador de $\mu$ com $n=25$?
+\end{enumerate}
+\mac{Note que $\mu$ desaparece na padronização — o valor 10\% do enunciado não entra na conta, ele apenas garante que estamos falando de desvios em torno da média populacional. O 15\% observado também não é usado aqui.}
+\arm{O erro mais comum é usar a normal padrão. Com $\sigma$ desconhecido e $n$ pequeno, a resposta correta vem da $t_{24}$, cujas caudas são mais pesadas (a probabilidade calculada fica um pouco \emph{menor} que pela normal).}
+
+\tit{Exercício 2 — Variância amostral dos gastos ($n=16$)}
+\obj{Traduzir uma pergunta sobre $S^2$ em uma pergunta sobre $\chi^2_{n-1}$.}
+\ferr{Seção 6.}
+Passo a passo:
+\begin{enumerate}
+\item Identifique $\sigma$ a partir do enunciado e calcule $\sigma^2$ (cuidado: o texto dá o \emph{desvio padrão}).
+\item Escreva a pivotal $Q=\frac{(n-1)S^2}{\sigma^2}\sim\chi^2_{15}$ e converta o evento: $\{S^2>c\}\equiv\{Q> (n-1)c/\sigma^2\}$.
+\item Calcule o valor transformado da fronteira e obtenha a probabilidade com \R{pchisq(q, df=15, lower.tail=FALSE)} ou tabela.
+\item Interprete o valor obtido em termos de variabilidade: uma variância amostral desse tamanho é comum ou rara sob o modelo assumido?
+\end{enumerate}
+\mac{Antes de calcular, faça o teste de sanidade: compare a fronteira $c$ com $\sigma^2$. Se $c$ for muito \emph{menor} que $\sigma^2$, a probabilidade de $S^2$ superá-la tem de ser próxima de 1; se for muito maior, próxima de 0. Isso evita inverter a cauda.}
+\arm{Confira as unidades e a escala do enunciado: com $\sigma=600$, a fronteira 700 está na escala de \emph{variância} ou de \emph{desvio padrão}? Resolva pela regra geral acima e, na interpretação, comente explicitamente a ordem de grandeza encontrada (se a resposta for praticamente 1, diga isso e explique por quê). Se a intenção do enunciado for uma fronteira comparável a $\sigma^2$, o mesmo roteiro se aplica trocando apenas o valor de $c$.}
+\arm{Não esqueça o fator $(n-1)$ ao transformar: $\chi^2$ recebe $\frac{(n-1)c}{\sigma^2}$, não $c/\sigma^2$.}
+
+\tit{Exercício 3 — GRE: diferença entre dois grupos}
+\obj{Construir a distribuição amostral de $\bar Y_A-\bar Y_B$ e calcular uma probabilidade de cauda.}
+\ferr{Seção 8.}
+Passo a passo:
+\begin{enumerate}
+\item Escreva as duas distribuições amostrais separadamente: $\bar Y_A\sim N(\mu_A,\sigma_A^2/n_A)$ e $\bar Y_B\sim N(\mu_B,\sigma_B^2/n_B)$ (populações normais $\Rightarrow$ exato).
+\item Monte a distribuição da diferença: média $=\mu_A-\mu_B$; variância $=\sigma_A^2/n_A+\sigma_B^2/n_B$ (\emph{some}, não subtraia). Extraia a raiz para obter o erro padrão da diferença.
+\item Padronize a fronteira 50: $z=\frac{50-(\mu_A-\mu_B)}{EP}$ e calcule $P(Z>z)$.
+\item Interprete: como 50 se compara com a diferença esperada? A probabilidade obtida indica que uma vantagem observada de 50 pontos seria comum ou surpreendente sob os parâmetros assumidos?
+\end{enumerate}
+\mac{Antes de padronizar, calcule mentalmente a diferença esperada; o sinal de $z$ já diz se a resposta deve ser maior ou menor que 0,5.}
+\arm{Erros típicos: (i) subtrair as variâncias; (ii) usar $\sigma_A,\sigma_B$ em vez de $\sigma_A/\sqrt{n_A}$ e $\sigma_B/\sqrt{n_B}$; (iii) esquecer que os dois tamanhos amostrais são diferentes.}
+
+\tit{Exercício 4 — Razão de variâncias entre duas turmas}
+\obj{Usar a distribuição $F$ para avaliar quão extrema é uma razão observada $s_A^2/s_B^2$.}
+\ferr{Seção 7.}
+Passo a passo:
+\begin{enumerate}
+\item Escreva a pivotal completa $\dfrac{S_A^2/\sigma_A^2}{S_B^2/\sigma_B^2}\sim F_{(n_A-1,\,n_B-1)}$ e determine os dois graus de liberdade, \emph{na ordem correta} (numerador = turma A).
+\item Imponha a hipótese $\sigma_A^2=\sigma_B^2$ e observe o que acontece com os parâmetros na pivotal: a razão observada passa a seguir diretamente a $F$.
+\item Traduza “pelo menos tão grande quanto essa” em uma probabilidade de \emph{cauda superior}: $P(F\ge 2{,}5)$.
+\item Obtenha o valor com \R{pf(2.5, df1, df2, lower.tail=FALSE)} ou tabela (na tabela, procure entre quais níveis $\alpha$ o valor 2,5 se situa e conclua por intervalo).
+\item Interprete: probabilidade pequena sugere que a igualdade de variâncias é pouco compatível com os dados; probabilidade moderada sugere que a razão observada pode ser fruto do acaso amostral.
+\end{enumerate}
+\mac{Compare 2,5 com a média da $F$ (Seção 7), que é próxima de 1: já se sabe de antemão que a resposta ficará na cauda direita, portanto abaixo de 0,5.}
+\arm{Se sua tabela só traz cauda superior e você precisar da inferior, use a reciprocidade; e jamais troque $F_{(n_A-1,n_B-1)}$ por $F_{(n_B-1,n_A-1)}$ — os gl são 14 e 19, nessa ordem.}
+
+\tit{Exercício 5 — IC para a altura média (três cenários)}
+\obj{Aplicar o IC com $\sigma$ conhecido e comparar o efeito de $n$ e do coeficiente de confiança.}
+\ferr{Seções 11, 16.}
+Passo a passo:
+\begin{enumerate}
+\item Identifique que o enunciado fornece o desvio padrão \emph{populacional} $\sigma=15$: isso autoriza o uso de $z$, mesmo em (a), onde $n=10$, porque a população é normal.
+\item Para cada item, localize $z_{\alpha/2}$ correspondente ao coeficiente de confiança (atenção: 90\% $\Rightarrow$ $\alpha/2=0{,}05$).
+\item Calcule o erro padrão $\sigma/\sqrt n$, depois a margem $e=z_{\alpha/2}\,\sigma/\sqrt n$, e monte $\bar y\pm e$.
+\item Compare os três intervalos: mesma estimativa central, amplitudes diferentes. Discuta separadamente o efeito de aumentar $n$ (itens a$\to$b) e o efeito de reduzir a confiança (b$\to$c, onde $n$ também muda).
+\item Redija a interpretação de um deles usando a Seção 17.
+\end{enumerate}
+\mac{Organize os três casos em uma tabela com colunas: $n$, $1-\alpha$, $z_{\alpha/2}$, $EP$, margem, IC, amplitude. A comparação pedida no final sai pronta da tabela.}
+\arm{Não use $t$ aqui: $\sigma$ é populacional e conhecido. E lembre que em (c) dois fatores mudam ao mesmo tempo (confiança \emph{e} $n$) — a comparação exige mencionar os dois efeitos, que atuam no mesmo sentido de estreitar o intervalo.}
+
+\tit{Exercício 6 — IC para proporção (detergente)}
+\obj{Construir o IC otimista para $p$ e reconhecer a diferença para o conservador.}
+\ferr{Seções 9, 13.}
+Passo a passo:
+\begin{enumerate}
+\item Extraia $\hat p$ e $n$ do enunciado; verifique as condições $n\hat p\ge5$ e $n(1-\hat p)\ge5$.
+\item “Otimista” indica qual estimador de $p(1-p)$ usar no erro padrão — escolha entre as duas fórmulas da Seção 13 e justifique a escolha em uma linha.
+\item Determine $z_{\alpha/2}$ para 90\%.
+\item Monte $\hat p\pm z_{\alpha/2}\,EP$ e apresente o intervalo (opcionalmente também em porcentagem).
+\item Comente: se você tivesse usado a versão conservadora, o intervalo seria mais largo ou mais estreito? Por quê? (compare $\hat p(1-\hat p)$ com $0{,}25$).
+\end{enumerate}
+\mac{Como $\sqrt{n}=\sqrt{625}$ é exato, o erro padrão sai sem arredondamento — aproveite para manter precisão até o fim.}
+\arm{O intervalo é para a \emph{proporção} $p$, não para o número de donas de casa; e os limites devem cair dentro de $[0,1]$ — se saírem fora, algo está errado.}
+
+\tit{Exercício 7 — Interpretação de $IC[\mu;0{,}95]=[21{,}5;\,32{,}5]$}
+\obj{Redigir a interpretação frequentista correta e apontar as leituras erradas.}
+\ferr{Seção 17.}
+Roteiro da resposta:
+\begin{enumerate}
+\item Diga o que os números \emph{são}: limites calculados a partir de uma amostra específica; note que o centro é a estimativa pontual e que a semi-amplitude é a margem de erro (calcule os dois a partir dos limites).
+\item Enuncie a interpretação em termos de \emph{repetição do procedimento}: entre todos os intervalos construídos pelo mesmo método em amostras repetidas, cerca de 95\% conteriam $\mu$.
+\item Explique por que a frase “a probabilidade de $\mu$ estar entre 21,5 e 32,5 é 0,95” é inadequada na abordagem frequentista (parâmetro fixo, intervalo já calculado).
+\item Liste ao menos duas leituras incorretas adicionais (95\% dos dados, 95\% das médias futuras) e corrija-as.
+\item Feche comentando o que aconteceria à amplitude se o coeficiente subisse para 99\%.
+\end{enumerate}
+\mac{Uma frase-modelo segura: “Com 95\% de confiança, os valores plausíveis para $\mu$, à luz desta amostra, estão entre 21,5 e 32,5.” Ela transmite a ideia sem atribuir probabilidade ao parâmetro.}
+
+\tit{Exercício 8 — Válvulas ($N=50.000$, $n=400$)}
+\textbf{(a)} \obj{IC de 99\% para a vida média.}
+\ferr{Seções 3, 11, 12, 17.}
+\begin{enumerate}
+\item Note que o desvio padrão dado é \emph{amostral} ($s=100$). Rigorosamente, o pivô é $t_{399}$; como $n$ é grande, justifique que $t_{399}\approx z$ e siga com $z_{\alpha/2}$ de 99\%.
+\item Verifique a necessidade da correção de população finita: calcule $n/N$ e compare com 5\% (Seção 3). Conclua se pode ou não ser omitida — e diga isso explicitamente na resposta.
+\item Monte $\bar y \pm z_{\alpha/2}\, s/\sqrt n$ e interprete conforme a Seção 17, em horas de vida.
+\end{enumerate}
+\textbf{(b)} \obj{Dimensionamento de amostra.}
+\begin{enumerate}
+\item Identifique a margem de erro desejada na expressão $800\pm 7{,}84$ e o novo coeficiente de confiança (95\%).
+\item Use $n=(z_{\alpha/2}\,s/e)^2$ com $s=100$ como estimativa de $\sigma$ (amostra piloto).
+\item Arredonde \emph{para cima} e comente se o novo $n$ é maior ou menor que 400 e por quê (a confiança caiu, mas a margem exigida também).
+\end{enumerate}
+\mac{Confira sua conta de (b) invertendo: com o $n$ encontrado, recalcule $z\,s/\sqrt n$ e veja se recupera aproximadamente 7,84.}
+\arm{Não misture os coeficientes: (a) é 99\%, (b) é 95\%. E $e$ é a \emph{semi}-amplitude, não a amplitude total.}
+
+\tit{Exercício 9 — IC para a variância dos gastos ($n=25$)}
+\obj{Construir um IC assimétrico via $\chi^2$.}
+\ferr{Seções 6, 14.}
+Passo a passo:
+\begin{enumerate}
+\item Escreva a pivotal $Q=\frac{(n-1)S^2}{\sigma^2}\sim\chi^2_{24}$ e a afirmação de probabilidade com os dois quantis que deixam 2,5\% em cada cauda.
+\item Isole $\sigma^2$ passo a passo (multiplique, inverta, atente para a troca de sentido das desigualdades ao inverter). Escreva a fórmula final antes de substituir números.
+\item Busque os dois quantis: \R{qchisq(0.025, 24)} e \R{qchisq(0.975, 24)} — ou as colunas correspondentes na tabela. Confira que um é bem menor que 24 e o outro bem maior.
+\item Substitua $(n-1)s^2$ e obtenha os limites. Verifique que $s^2$ está \emph{dentro} do intervalo, porém \emph{não} no centro dele.
+\item Se quiser o IC para o desvio padrão, extraia a raiz dos dois limites; interprete em reais.
+\end{enumerate}
+\mac{Regra mnemônica para não inverter errado: o \emph{maior} quantil da $\chi^2$ vai no denominador do \emph{menor} limite do intervalo.}
+\arm{Este IC depende fortemente da hipótese de normalidade — mencione isso na interpretação. E não escreva o resultado na forma $s^2\pm$ algo: a distribuição $\chi^2$ é assimétrica.}
+
+\tit{Checklist final}
+\begin{itemize}
+\item $\sigma$ é conhecido (usar $z$) ou estimado por $s$ (usar $t$, com $n-1$ gl)?
+\item A pergunta é sobre média, diferença de médias, variância, razão de variâncias ou proporção? Cada uma tem sua pivotal.
+\item Nas distribuições assimétricas ($\chi^2$, $F$), tratei cada cauda separadamente e respeitei a ordem dos gl?
+\item Nos ICs: valor crítico correto para $\alpha/2$, erro padrão correto, limites coerentes (proporção em $[0,1]$, variância positiva)?
+\item Toda interpretação foi redigida em termos do \emph{procedimento} e no contexto do problema (horas, reais, centímetros, pontos)?
+\end{itemize}
+
+\end{multicols*}
+\end{document}

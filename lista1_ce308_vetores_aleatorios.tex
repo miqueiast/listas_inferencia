@@ -1,0 +1,489 @@
+\documentclass[a4paper,8pt]{extarticle}
+
+%============================ PACOTES =============================
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+% Carrega hifenização em português apenas se o babel-portugues estiver instalado
+\IfFileExists{portuges.ldf}{\usepackage[brazilian]{babel}}{}
+\usepackage[margin=0.5cm,landscape]{geometry}
+\usepackage{multicol}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage[expansion=false]{microtype}
+
+%========================= AJUSTES DE LAYOUT ======================
+\setlength{\columnsep}{0.38cm}
+\setlength{\columnseprule}{0.2pt}
+\renewcommand{\columnseprulecolor}{\color{gray!45}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+\setlength{\emergencystretch}{3em}
+\hyphenpenalty=50
+\tolerance=9999
+\pagestyle{plain}
+
+\definecolor{azul}{RGB}{28,58,110}
+\definecolor{vinho}{RGB}{140,30,50}
+\definecolor{verde}{RGB}{20,95,70}
+\definecolor{cinza}{RGB}{240,240,244}
+
+\setlist[itemize]{leftmargin=0.9em,itemsep=0.5pt,topsep=1pt,parsep=0pt}
+\setlist[enumerate]{leftmargin=1.2em,itemsep=0.5pt,topsep=1pt,parsep=0pt}
+
+\newcommand{\tit}[1]{\vspace{2pt}\textcolor{azul}{\rule{\linewidth}{0.6pt}}\\[1pt]\textbf{\textcolor{azul}{#1}}\\[1pt]}
+\newcommand{\mac}[1]{\textcolor{verde}{\textbf{Macete:}} #1\par}
+\newcommand{\arm}[1]{\textcolor{vinho}{\textbf{Armadilha:}} #1\par}
+\newcommand{\ferr}[1]{\textbf{Ferramentas:} #1\par}
+\newcommand{\obj}[1]{\textbf{Objetivo:} #1\par}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Rr}{\mathbb{R}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\ind}{\stackrel{iid}{\sim}}
+\newcommand{\R}[1]{\texttt{\footnotesize #1}}
+
+%================================================================
+\begin{document}
+\raggedright
+\footnotesize
+
+\begin{center}
+{\normalsize\bfseries\color{azul} CE308 — Teoria da Probabilidade 2 · Lista 1: Vetores Aleatórios, Independência e Funções de V.A.}\\[1pt]
+{\scriptsize\itshape Resumo teórico exaustivo + guia de resolução (sem gabarito) — DEST/UFPR — Prof.\ Benito Olivares Aguilera}
+\end{center}
+\vspace{-4pt}
+
+\begin{multicols*}{5}
+\scriptsize
+
+%==================================================================
+\begin{center}\colorbox{cinza}{\parbox{0.94\linewidth}{\centering\bfseries\color{azul} PARTE I — RESUMO TEÓRICO}}\end{center}
+
+\tit{1. Vetor aleatório e função de distribuição conjunta}
+$(X,Y):\Omega\to\Rr^2$ é vetor aleatório se $\{X\le x, Y\le y\}$ é evento para todo $(x,y)$. A \textbf{FDC conjunta} é
+\[F(x,y)=P(X\le x,\ Y\le y).\]
+Para $n$ variáveis: $F(x_1,\dots,x_n)=P(X_1\le x_1,\dots,X_n\le x_n)$.
+
+\tit{2. Condições que caracterizam uma FDC bivariada}
+Uma função $F:\Rr^2\to[0,1]$ é FDC conjunta se e só se:
+\begin{enumerate}
+\item \textbf{Limites nos extremos:}
+\[\lim_{x\to-\infty}F(x,y)=\lim_{y\to-\infty}F(x,y)=0\]
+\[\lim_{x,y\to+\infty}F(x,y)=1 .\]
+\item \textbf{Monotonicidade}: não decrescente em cada argumento separadamente.
+\item \textbf{Continuidade à direita} em cada argumento.
+\item \textbf{Condição do retângulo ($\Delta$-monotonicidade)}: para $a_1<b_1$, $a_2<b_2$,
+\[P(a_1<X\le b_1,\ a_2<Y\le b_2)=\]
+\[F(b_1,b_2)-F(a_1,b_2)\]
+\[-\,F(b_1,a_2)+F(a_1,a_2)\ \ge\ 0 .\]
+\end{enumerate}
+As três primeiras \emph{não bastam}: existe função monótona em cada variável que viola (4). Sempre teste (4) explicitamente, inclusive nas fronteiras entre os ramos da definição por partes; verifique também se os ramos \emph{colam} (mesmo valor no encontro), o que garante a continuidade.
+
+\tit{3. Marginais a partir da FDC}
+\[F_X(x)=\lim_{y\to+\infty}F(x,y)\]
+\[F_Y(y)=\lim_{x\to+\infty}F(x,y).\]
+Em definições por partes, tome o limite \emph{dentro do ramo válido} para $y$ grande (não no ramo que vale só perto da origem).
+
+\tit{4. Caso discreto}
+Função de probabilidade conjunta $p(x,y)=P(X=x,Y=y)$, com $p\ge0$ e $\sum_x\sum_y p(x,y)=1$. Marginais por soma:
+\[p_X(x)=\sum_y p(x,y),\qquad p_Y(y)=\sum_x p(x,y).\]
+Organize sempre em \textbf{tabela de dupla entrada}: as marginais são as somas das linhas e das colunas (por isso o nome “marginal”: ficam nas margens). Para eventos:
+\[P((X,Y)\in A)=\sum_{(x,y)\in A}p(x,y).\]
+FDC discreta: função escada, $F(x,y)=\sum_{u\le x}\sum_{v\le y}p(u,v)$, constante por blocos, com saltos nos pontos de massa.
+
+\tit{5. Caso contínuo}
+$f(x,y)\ge0$ com $\iint_{\Rr^2}f=1$ é densidade conjunta se
+\[F(x,y)=\int_{-\infty}^{x}\!\!\int_{-\infty}^{y}f(u,v)\,dv\,du .\]
+Recuperação da densidade:
+\[f(x,y)=\frac{\partial^2 F(x,y)}{\partial x\,\partial y}\]
+nos pontos de continuidade (a ordem das derivadas é irrelevante). Probabilidade de região:
+\[P((X,Y)\in A)=\iint_A f(x,y)\,dx\,dy .\]
+Pontos e curvas têm probabilidade zero; por isso $\le$ e $<$ são intercambiáveis no caso contínuo.
+
+\tit{6. Marginais no caso contínuo}
+\[f_X(x)=\int_{-\infty}^{\infty} f(x,y)\,dy\]
+\[f_Y(y)=\int_{-\infty}^{\infty} f(x,y)\,dx .\]
+Os limites \emph{efetivos} são determinados pelo suporte: fixe $x$ e pergunte “que valores de $y$ são possíveis?”. Sempre declare o \emph{domínio de validade} da marginal obtida — uma marginal sem o suporte especificado está incompleta. Segunda via de obtenção: derivar a FDC marginal, $f_X=dF_X/dx$ (é assim que se “obtém a marginal de duas formas diferentes”).
+
+\tit{7. Constante de normalização}
+Se $f(x,y)=k\,g(x,y)$ em uma região $R$, então
+\[k=\left[\iint_R g(x,y)\,dx\,dy\right]^{-1}.\]
+No discreto, $k=[\sum\sum g]^{-1}$. “Proporcional a” significa exatamente isso. Verifique que $k>0$ e que a integral converge — se a região for ilimitada e $g$ for polinomial, a integral diverge e o modelo é impossível (sinal de erro de enunciado ou de leitura da região).
+
+\tit{8. Independência}
+$X$ e $Y$ são independentes se e só se, para todo $(x,y)$,
+\[F(x,y)=F_X(x)\,F_Y(y),\]
+equivalentemente $p(x,y)=p_X(x)p_Y(y)$ (discreto) ou $f(x,y)=f_X(x)f_Y(y)$ q.t.p.\ (contínuo).
+\textbf{Critério prático de fatoração:} $X\perp Y$ se e só se existem $g,h\ge0$ com
+\[f(x,y)=g(x)\,h(y)\ \ \text{para todo }(x,y),\]
+\emph{incluindo a região onde $f=0$}. Consequências operacionais:
+\begin{itemize}
+\item \textbf{Suporte não retangular $\Rightarrow$ dependência.} Se o domínio é do tipo $0\le y\le x$, $x+y\le1$, $y\le 1-x^2$, etc., o valor possível de uma variável depende da outra: as v.a.\ \emph{não} são independentes, sem precisar calcular integral alguma.
+\item Suporte retangular (produto de intervalos) $+$ integrando que fatora $\Rightarrow$ independência. As constantes podem ser distribuídas livremente entre $g$ e $h$.
+\item Se $f$ é soma de termos que misturam $x$ e $y$ (ex.: $x^2+y$, $x^2+y^2$, $xy+x+y$), tipicamente \emph{não} fatora — mas prove exibindo um par $(x,y)$ com $f(x,y)\ne f_X(x)f_Y(y)$.
+\item Independência \emph{não} é implicada por correlação nula; e independência dois a dois \emph{não} implica independência mútua (caso trivariado exige $f(x,y,z)=f_X f_Y f_Z$).
+\end{itemize}
+
+\tit{9. Montagem de integrais em regiões}
+Roteiro infalível:
+\begin{enumerate}
+\item \textbf{Desenhe} o suporte e, por cima, a região do evento; hachure a interseção.
+\item Escolha a ordem de integração. Integrando primeiro em $y$: para cada $x$ fixo, os limites de $y$ são funções de $x$; o limite externo é numérico.
+\item Escreva a integral iterada e confira: \emph{os limites externos nunca contêm variáveis}.
+\item Se a região exigir divisão em partes, some as integrais das partes disjuntas.
+\item Confira o resultado com a integral total $=1$ ou com um argumento de simetria/área.
+\end{enumerate}
+Teorema de Fubini garante que a ordem pode ser trocada (integrando não negativo) — trocar a ordem é o principal recurso quando uma das integrais fica difícil.
+
+\tit{10. Distribuição uniforme em uma região}
+Se $(X,Y)$ é uniforme em $R$ de área $|R|$:
+\[f(x,y)=\frac{1}{|R|}\ \text{em }R,\qquad P(A)=\frac{|A\cap R|}{|R|}.\]
+Isto reduz probabilidades a \textbf{cálculo de áreas} (útil em quadrados, discos e faixas $|X-Y|<c$). As marginais de uma uniforme bidimensional \emph{não} são uniformes, salvo se $R$ for retângulo.
+
+\tit{11. Modelos univariados de referência}
+\begin{itemize}
+\item \textbf{Uniforme} $U(a,b)$: $f=1/(b-a)$.
+\item \textbf{Exponencial} $\exp(\lambda)$: $f(x)=\lambda e^{-\lambda x}$, $x>0$; $F(x)=1-e^{-\lambda x}$; $\E=1/\lambda$; falta de memória. (Cuidado com a parametrização por média: $\exp(1/2)$ pode significar taxa $\lambda=1/2$.)
+\item \textbf{Gama}$(\alpha,\lambda)$: $f(x)=\frac{\lambda^{\alpha}}{\Gamma(\alpha)}x^{\alpha-1}e^{-\lambda x}$, $x>0$; $\Gamma(n)=(n-1)!$. Gama$(1,\lambda)=\exp(\lambda)$; Gama$(n,\lambda)$ = Erlang = soma de $n$ exponenciais i.i.d.
+\item \textbf{Normal} $N(\mu,\sigma^2)$; \textbf{Qui-quadrado} $\chi^2_\nu=$ Gama$(\nu/2,1/2)$.
+\item \textbf{Geométrica} sobre $\{0,1,2,\dots\}$: $P(X=k)=p(1-p)^k$.
+\item \textbf{Weibull} (forma $\alpha$, escala $\beta$): $f(y)=\frac{\alpha}{\beta^{\alpha}}y^{\alpha-1}e^{-(y/\beta)^{\alpha}}$, $y>0$. Surge como potência de uma exponencial; cuidado, há parametrizações alternativas — obtenha a sua por transformação, não de memória.
+\item \textbf{Lognormal}: $Y=e^{X}$ com $X$ normal.
+\item \textbf{Cauchy}: $f(w)=\frac{1}{\pi(1+w^2)}$; surge como razão de normais padrão independentes.
+\item \textbf{Beta}$(\alpha,\beta)$: $f(z)\propto z^{\alpha-1}(1-z)^{\beta-1}$ em $(0,1)$; Beta$(1,1)=U(0,1)$.
+\end{itemize}
+\mac{Reconhecer o \emph{núcleo} (a parte que depende da variável) é suficiente para identificar a distribuição: a constante é obrigada pela normalização.}
+
+\tit{12. Função geradora de momentos (FGM)}
+\[M_X(t)=\E[e^{tX}],\ \ t\in(-h,h).\]
+\begin{itemize}
+\item \textbf{Unicidade}: se $M_X=M_Y$ em uma vizinhança de 0, então $X$ e $Y$ têm a mesma distribuição. É isso que permite “identificar” a distribuição de uma soma.
+\item \textbf{Soma de independentes}: $M_{X+Y}(t)=M_X(t)M_Y(t)$; para $n$ i.i.d., $M_{S_n}=[M_X(t)]^n$.
+\item $M_{aX+b}(t)=e^{bt}M_X(at)$.
+\item Momentos: $\E[X^k]=M^{(k)}(0)$.
+\item FGMs úteis: $\exp(\lambda)$: $\lambda/(\lambda-t)$, $t<\lambda$. Gama$(\alpha,\lambda)$: $[\lambda/(\lambda-t)]^{\alpha}$. $N(\mu,\sigma^2)$: $\exp(\mu t+\sigma^2t^2/2)$.
+\end{itemize}
+
+\tit{13. Transformações de uma variável}
+\textbf{(a) Método da FDC (sempre funciona):}
+\[F_Y(y)=P(g(X)\le y)\]
+— resolva a desigualdade em $x$, escreva em termos de $F_X$ e derive: $f_Y=dF_Y/dy$. Não esqueça de determinar o \emph{suporte} de $Y$.
+\textbf{(b) Fórmula de mudança de variável} (para $g$ monótona e diferenciável, com inversa $x=g^{-1}(y)$):
+\[f_Y(y)=f_X\big(g^{-1}(y)\big)\left|\frac{d}{dy}g^{-1}(y)\right| .\]
+\textbf{(c) $g$ não monótona:} parta o domínio em ramos monótonos $A_1,\dots,A_m$ e some as contribuições:
+\[f_Y(y)=\sum_{i=1}^{m} f_X\big(g_i^{-1}(y)\big)\left|\frac{d g_i^{-1}}{dy}\right| .\]
+(É o caso de $Y=X^2$, $Y=|X|$ e de razões que assumem o mesmo valor em dois ramos.)
+
+\tit{14. Método do Jacobiano (bivariado)}
+Seja $(U,V)=(g_1(X,Y),\,g_2(X,Y))$ uma transformação \textbf{bijetora} do suporte de $(X,Y)$ em um conjunto $S$, com inversa $x=x(u,v)$, $y=y(u,v)$ de derivadas contínuas. O jacobiano é
+\[J=\det\begin{pmatrix}\partial x/\partial u & \partial x/\partial v\\[2pt] \partial y/\partial u & \partial y/\partial v\end{pmatrix}\]
+e a densidade transformada é
+\[f_{U,V}(u,v)=f_{X,Y}\big(x(u,v),\,y(u,v)\big)\,|J|\]
+para $(u,v)\in S$, e zero fora de $S$. Passos obrigatórios:
+\begin{enumerate}
+\item Escrever a transformação e \emph{inverter} explicitamente.
+\item Calcular $J$ (ou calcular $J^{-1}=\partial(u,v)/\partial(x,y)$ e inverter — muitas vezes mais fácil).
+\item \textbf{Determinar o novo suporte $S$}: traduza as restrições de $(x,y)$ em restrições de $(u,v)$. Este é o passo que mais se erra.
+\item Substituir e simplificar; se a expressão fatorar em função de $u$ vezes função de $v$ \emph{com suporte retangular}, conclua independência.
+\end{enumerate}
+\textbf{Variável auxiliar:} para achar a densidade de \emph{uma} função $U=g_1(X,Y)$, invente uma segunda variável conveniente (por exemplo $V=Y$ ou $V=X+Y$), aplique o jacobiano e depois \textbf{integre $v$} para obter a marginal $f_U$.
+\textbf{Transformação não bijetora:} particione o suporte em regiões onde ela é bijetora e some as densidades resultantes.
+
+\tit{15. Fórmulas prontas derivadas do Jacobiano}
+Para $X\perp Y$ com densidades $f_X,f_Y$:
+Soma (convolução):
+\[f_{X+Y}(s)=\int f_X(x)\,f_Y(s-x)\,dx\]
+Diferença:
+\[f_{X-Y}(d)=\int f_X(y+d)\,f_Y(y)\,dy\]
+Razão:
+\[f_{X/Y}(w)=\int |y|\,f_X(wy)\,f_Y(y)\,dy\]
+Produto:
+\[f_{XY}(m)=\int \tfrac{1}{|y|}f_X(m/y)\,f_Y(y)\,dy .\]
+Em todos os casos, o suporte do resultado exige atenção: os limites de integração são os $x$ (ou $y$) que tornam \emph{ambos} os fatores positivos.
+
+\tit{16. Coordenadas polares}
+Para regiões circulares e para $X^2+Y^2$:
+\[x=\rho\cos\theta,\ y=\rho\sin\theta,\quad |J|=\rho,\]
+\[\iint_A f\,dx\,dy=\iint \tilde f(\rho,\theta)\,\rho\,d\rho\,d\theta .\]
+Fato central: se $X,Y\ind N(0,1)$, então $X^2+Y^2\sim\chi^2_2\equiv\exp(1/2)$ e o ângulo é uniforme em $(0,2\pi)$, independente do raio.
+
+\tit{17. Probabilidades de eventos definidos por desigualdades entre v.a.}
+Eventos como $\{Y<X\}$, $\{|X-Y|<c\}$, $\{X-kY>0\}$, $\{X+Y\le c\}$ são \emph{regiões do plano}: desenhe a reta de fronteira, identifique o semiplano/faixa e integre a densidade conjunta sobre a interseção com o suporte. No discreto, some as células correspondentes da tabela.
+Regras auxiliares: $P(A\cup B)=P(A)+P(B)-P(A\cap B)$; para $X,Y$ i.i.d.\ contínuas, $P(X<Y)=P(Y<X)=1/2$; para $X,Y$ i.i.d.\ discretas, $P(X<Y)=P(Y<X)=\frac{1-P(X=Y)}{2}$ (argumento de simetria).
+
+\tit{18. Séries úteis (caso discreto)}
+\[\sum_{k\ge0}r^{k}=\frac{1}{1-r},\quad \sum_{k\ge0}k r^{k}=\frac{r}{(1-r)^2}\ \ (|r|<1).\]
+
+%==================================================================
+\vspace{4pt}
+\begin{center}\colorbox{cinza}{\parbox{0.94\linewidth}{\centering\bfseries\color{azul} PARTE II — GUIA DE RESOLUÇÃO}}\end{center}
+\textit{Nenhum resultado numérico ou expressão final é fornecido: apenas o caminho.}
+
+\tit{Ex.\ 1 — FDC com ramo $\frac{x}{3}(1-e^{-y})$}
+\ferr{Seções 2, 3, 5, 6, 8.}
+\begin{enumerate}
+\item[(a)] Percorra a lista da Seção 2 \emph{item por item}: limites em $\pm\infty$ (teste $x\to\infty$ dentro do terceiro ramo e $y\to\infty$ dentro do segundo), monotonicidade (derive parcialmente em $x$ e em $y$ e verifique o sinal), continuidade nas fronteiras $x=0$, $x=3$, $y=0$ (os ramos coincidem?) e, por fim, a desigualdade do retângulo.
+\item[(b)] Aplique a definição da Seção 3, tomando os limites no ramo apropriado. Escreva cada marginal como função definida por partes em toda a reta.
+\item[(c)] Derive duas vezes, $\partial^2F/\partial x\partial y$, ramo a ramo; onde $F$ é constante em algum argumento, a densidade é nula. Declare o suporte.
+\item[(d)] Integre a conjunta (Seção 6) \emph{e} derive as marginais de (b): os dois caminhos devem coincidir — use isso como conferência.
+\item[(e)] Compare $F(x,y)$ com $F_X(x)F_Y(y)$, ou $f$ com $f_Xf_Y$; note que a estrutura do ramo central já é sugestiva. Justifique com o critério de fatoração e verifique que vale em \emph{todo} o plano.
+\end{enumerate}
+\mac{Reconheça os núcleos: um fator do tipo $x/3$ em $[0,3)$ e um fator $1-e^{-y}$ são FDCs de modelos clássicos. Nomeie-os na resposta.}
+\arm{Não derive “por atacado”: a densidade tem de ser dada por partes, com o suporte explícito.}
+
+\tit{Ex.\ 2 — FDC em região triangular}
+\ferr{Seções 2, 3, 5, 6, 9.}
+\begin{enumerate}
+\item[(a)] Traduza as condições dos quatro ramos em desigualdades no plano ($x\ge0$, $y\ge0$, $x<y$, $y<2$, $x<2$) e desenhe. Identifique o triângulo onde a “ação” acontece e as regiões onde $F$ satura em 1 ou vale 0.
+\item[(b)] Marginais por limite (Seção 3): para $F_X$, use o ramo válido quando $y$ cresce indefinidamente; para $F_Y$, o ramo válido quando $x$ cresce. Escreva o resultado por partes e verifique que cada marginal é não decrescente, vai de 0 a 1 e é contínua.
+\item[(c)] $f=\partial^2F/\partial x\partial y$ em cada ramo; a densidade só é não nula na região interna — confirme integrando-a sobre o triângulo e obtendo 1.
+\item[(d)] “Duas formas diferentes” = (i) integrar a conjunta sobre a fatia correspondente (atenção: os limites de integração dependem da outra variável, pela geometria do triângulo) e (ii) derivar as FDCs marginais de (b).
+\item[(e)] Antes de qualquer conta: o suporte é retangular? (Seção 8.) Isso já responde; complemente com um contraexemplo numérico.
+\end{enumerate}
+\arm{Nas fatias do triângulo, os limites de $x$ vão de 0 até $\min(y,2)$ — ignorar o $\min$ é o erro clássico.}
+
+\tit{Ex.\ 3 — Densidade $1/4$ em dois retângulos}
+\ferr{Seções 5, 6, 8, 9.}
+\begin{enumerate}
+\item[(a)] Desenhe os dois blocos (um à esquerda-acima, outro à direita-abaixo) e confirme que a integral total é 1 (soma de área $\times$ altura). Para $f_X(x)$, fixe $x$ em cada faixa e integre em $y$ apenas sobre o bloco que intersecta aquela vertical — o comprimento do intervalo muda conforme a faixa, então a marginal é definida por partes. Análogo para $f_Y$.
+\item[(b)] Verifique a independência olhando o suporte (é um retângulo?) e depois confirmando com o produto das marginais em um ponto conveniente — por exemplo, um ponto onde $f=0$ mas as duas marginais são positivas.
+\item[(c)] Para a FDC, particione o plano segundo as retas $x=-2,0,1$ e $y=-2,0,1$, e em cada bloco calcule a área acumulada vezes $1/4$. Organize numa tabela de regiões; confira a continuidade entre blocos vizinhos e que $F\to1$ no canto superior direito.
+\end{enumerate}
+\mac{Como a densidade é constante, toda integral vira \emph{área} $\times\,1/4$ — resolva geometricamente e economize cálculo.}
+
+\tit{Ex.\ 4 — Mix de oleaginosas, $f=kxy$}
+\ferr{Seções 7, 8, 9.}
+\begin{enumerate}
+\item[0.] \textbf{Identifique o suporte, que o enunciado não escreve:} os pesos são não negativos e a soma dos três é 1, logo $x\ge0$, $y\ge0$ e $x+y\le1$ — um triângulo (simplex). Desenhe.
+\item[(a)] Ache $k$ pela normalização sobre o triângulo (Seção 7); depois traduza “no máximo 50\% da lata” em $\{X+Y\le 1/2\}$, desenhe o subtriângulo e integre. Monte a integral iterada com o limite interno dependendo da outra variável.
+\item[(b)] Aplique o critério do suporte (Seção 8). Note a sutileza: o integrando $xy$ \emph{fatora}, mas isso não basta — a resposta depende do formato da região. Justifique formalmente calculando as marginais e comparando o produto com $f$.
+\end{enumerate}
+\arm{$f(x,y)=kxy$ com suporte triangular é o contraexemplo clássico de “fatora mas não é independente”. Não conclua independência só pelo formato do produto.}
+
+\tit{Ex.\ 5 — Discreta com $p(x,y)\propto|x+y|$}
+\ferr{Seções 4, 7, 8, 17.}
+\begin{enumerate}
+\item Monte a tabela $5\times5$ com $|x+y|$ em cada célula ($x,y\in\{-2,\dots,2\}$). Some tudo para achar a constante (Seção 7); note que a soma pode ser organizada por diagonais de mesmo valor $x+y$.
+\item[(a)] Marginais = somas de linhas e colunas, divididas pela constante. Verifique que cada marginal soma 1 e observe a simetria da tabela.
+\item[(b)] Teste $p(x,y)=p_X(x)p_Y(y)$; basta \emph{uma} célula que falhe. Escolha uma célula onde $p(x,y)=0$ (existe, na antidiagonal $x+y=0$) e as marginais sejam positivas — é o contraexemplo mais rápido.
+\item[(c)] $P(X<0,Y\ge0)$: some o bloco de células com $x\in\{-2,-1\}$ e $y\in\{0,1,2\}$. $P(|X-Y|\le1)$: marque as células das três diagonais $y=x$, $y=x\pm1$ e some.
+\end{enumerate}
+\mac{Antes de somar, destaque na tabela as células nulas: elas reduzem bastante a conta e já servem para o item (b).}
+
+\tit{Ex.\ 6 — Densidade trivariada}
+\ferr{Seções 5, 8, 9.}
+\begin{enumerate}
+\item[(a)] Independência \emph{mútua} exige $f(x,y,z)=f_X(x)f_Y(y)f_Z(z)$. Como o integrando é uma soma com termos cruzados ($xy$, $xz$, $yz$), tente fatorar e mostre que é impossível; alternativamente calcule as três marginais (integrando as outras duas variáveis em $[0,1]$) e exiba um ponto onde o produto difere de $f$. Comente também a independência dois a dois (calcule $f_{X,Y}$ integrando $z$ e teste a fatoração) — o contraste é o ponto pedagógico do exercício.
+\item[(b)] O evento é um bloco: $x\in[0,1/2]$, $y\in[1/3,1]$, $z\in[0,1]$ livre. Integre termo a termo (a integral de uma soma é a soma das integrais) — cada parcela é um produto de integrais unidimensionais elementares.
+\end{enumerate}
+\mac{Verifique primeiro que $f$ integra 1 no cubo: isso valida sua montagem antes de calcular a probabilidade.}
+
+\tit{Ex.\ 7 — Três lançamentos: $X$ caras, $Y$ tempo até a 1ª cara}
+\ferr{Seções 4, 17.}
+\begin{enumerate}
+\item Liste o espaço amostral com as 8 sequências equiprováveis (CCC, CCK, \dots). Para cada uma, anote o par $(X,Y)$ segundo as definições — atenção à convenção $Y=0$ quando não há cara.
+\item[(a)] Agrupe: $p(x,y)=\#\{\text{sequências}\}/8$. Monte a tabela com $x\in\{0,1,2,3\}$ e $y\in\{0,1,2,3\}$; muitas células são impossíveis (por exemplo, $X=3$ força um único valor de $Y$) — marque-as com zero.
+\item[(b)] Some linhas e colunas; confira $X$ contra o modelo binomial que você espera para 3 lançamentos honestos.
+\item[(c)] Cada probabilidade é uma soma de células: $\{X\le2, Y=1\}$ é uma coluna truncada; $\{X\le2,Y\le1\}$ inclui também $y=0$; para o \emph{ou}, use $P(A\cup B)=P(A)+P(B)-P(A\cap B)$ e reaproveite o item anterior como a interseção.
+\end{enumerate}
+\arm{$Y\le 1$ inclui $Y=0$ (o caso “nenhuma cara”). Ler $Y\le1$ como $Y=1$ é o erro mais comum aqui.}
+
+\tit{Ex.\ 8 — Dado e moeda independentes: FDC}
+\ferr{Seções 1, 4, 8.}
+\begin{enumerate}
+\item Escreva as marginais: $X$ uniforme discreta em $\{1,\dots,6\}$ e $Y$ Bernoulli (indicadora de cara).
+\item Como os experimentos são independentes, use $F(x,y)=F_X(x)F_Y(y)$ — mas \emph{justifique} esse uso citando a Seção 8, em vez de assumi-lo.
+\item Escreva $F_X$ como função escada, usando a parte inteira: para $1\le x<6$, $F_X(x)=\lfloor x\rfloor/6$; trate separadamente $x<1$ e $x\ge6$. Faça o mesmo para $F_Y$ com os três trechos ($y<0$, $0\le y<1$, $y\ge1$).
+\item Apresente o resultado como uma tabela de regiões do plano (produto dos trechos), e esboce o gráfico em degraus.
+\end{enumerate}
+\mac{Confira nos cantos: $F=0$ abaixo/à esquerda de tudo e $F=1$ para $x\ge6,\ y\ge1$.}
+
+\tit{Ex.\ 9 — Urna com reposição, indicadoras}
+\ferr{Seções 4, 8, 17.}
+\begin{enumerate}
+\item[(a)] Com reposição, as extrações são independentes e cada $X_i$ é Bernoulli com a probabilidade de vermelha lida do enunciado (1 vermelha entre 3 bolas). Escreva a conjunta como produto e apresente-a na forma compacta
+\[p(x_1,x_2,x_3)=\prod_{i=1}^{3}p^{x_i}(1-p)^{1-x_i},\]
+listando também as 8 combinações com seus valores.
+\item[(b)] Enumere quais dos 8 vetores satisfazem $x_1+x_2=x_3$ (teste os casos $x_3=0$ e $x_3=1$ separadamente) e some suas probabilidades.
+\end{enumerate}
+\arm{Se fosse \emph{sem} reposição, nada disso valeria: a independência é consequência direta da reposição — diga isso na resposta.}
+
+\tit{Ex.\ 10 — Pressão dos pneus}
+\ferr{Seções 5, 6, 7, 8, 9.}
+\begin{enumerate}
+\item[0.] \textbf{Leia a região com cuidado.} A densidade tem a forma $k(x^2+y^2)$ (o $k$ multiplica a soma inteira). Se o suporte fosse ilimitado ($x\ge30$, $y\ge30$), a integral divergiria e não existiria $k>0$ — verifique isso você mesmo e registre a observação. O modelo só faz sentido em um \emph{retângulo limitado} de pressões (na versão clássica do problema, $20\le x\le30$ e $20\le y\le30$, com pressão recomendada 26). Resolva com o retângulo adotado e deixe explícita a hipótese.
+\item[(a)] $k$ pela normalização (Seção 7): integral dupla de $x^2+y^2$ no retângulo, que se separa em somas de integrais elementares.
+\item[(b)] “Ambos abaixo da recomendada” = $\{X<26,\ Y<26\}$: mesmo integrando, novo retângulo de integração.
+\item[(c)] $\{|X-Y|\le2\}$ é a faixa entre as retas $y=x-2$ e $y=x+2$; intersecte-a com o quadrado e note que ela corta os cantos — divida em três pedaços (ou calcule pelo complementar, $|X-Y|>2$, que são dois triângulos, geralmente mais rápido).
+\item[(d)] Teste a fatoração de $x^2+y^2$ (Seção 8); calcule as marginais e compare com o produto em um ponto.
+\end{enumerate}
+\mac{No item (c), o complementar é simétrico: os dois triângulos têm a mesma integral por simetria em $x\leftrightarrow y$ — calcule um e dobre.}
+
+\tit{Ex.\ 11 — $f\propto \exp\{-\frac{1}{\pi}(\frac{x^2}{4}+y)\}$}
+\ferr{Seções 8, 11.}
+\begin{enumerate}
+\item Use a propriedade $e^{a+b}=e^{a}e^{b}$ para separar o expoente em uma parte que só depende de $x$ e outra que só depende de $y$.
+\item Verifique o suporte: $x\in\Rr$ e $y\ge0$ formam um retângulo (produto de intervalos) — condição indispensável para concluir independência.
+\item Distribua a constante e reconheça os núcleos: um deles é de uma normal (identifique $\mu$ e $\sigma^2$ comparando com $e^{-(x-\mu)^2/2\sigma^2}$), o outro é de uma exponencial (identifique a taxa). Confirme que as constantes obrigatórias de cada modelo, multiplicadas, reproduzem a constante do enunciado.
+\item Conclua sobre independência citando o critério de fatoração.
+\end{enumerate}
+\mac{Se as constantes não baterem exatamente, revise a leitura do enunciado — mas a conclusão sobre independência depende apenas da \emph{forma} fatorada, não da constante.}
+
+\tit{Ex.\ 12 — $f=1/x$ em $0\le y\le x\le1$}
+\ferr{Seções 6, 9.}
+\begin{enumerate}
+\item Desenhe o triângulo. Confirme que $f$ integra 1.
+\item[(a)] $f_X$: fixe $x$ e integre em $y$ de 0 a $x$ (o integrando não depende de $y$ — a conta é imediata e o resultado é um modelo conhecido, nomeie-o). $f_Y$: fixe $y$ e integre em $x$ de $y$ até 1; aparecerá um logaritmo. Dê o suporte de cada uma e verifique que ambas integram 1.
+\item[(b)] O evento $\{X\le 1/2,\ Y<1/2\}$ intersectado com o triângulo é um triângulo menor — observe que a restrição em $Y$ é redundante dentro do suporte. Monte a integral com os limites corretos.
+\end{enumerate}
+\arm{$f_Y$ é ilimitada perto de $y=0$; isso é permitido (densidade não precisa ser limitada), desde que a integral seja finita.}
+
+\tit{Ex.\ 13 — $f=\lambda^2e^{-\lambda y}$, $0\le x\le y$}
+\ferr{Seções 6, 11, 5.}
+\begin{enumerate}
+\item[(a)] $f_X$: integre em $y$ de $x$ a $\infty$ (exponencial pura). $f_Y$: integre em $x$ de 0 a $y$ (o integrando não depende de $x$, então sai o comprimento do intervalo). Compare cada resultado com a densidade Gama da Seção 11 e identifique os pares $(\alpha,\lambda)$ — lembre que Gama$(1,\lambda)$ é a exponencial.
+\item[(b)] Para $F(x,y)=P(X\le x,Y\le y)$, \emph{a região de integração depende da posição de $(x,y)$ em relação à reta $y=x$}: trate os casos $0\le x\le y$ e $0\le y<x$ separadamente (neste segundo, o retângulo é cortado pela restrição $x\le y$), além dos casos triviais com argumento negativo. Verifique a continuidade entre os casos na reta $y=x$ e o limite 1 no infinito.
+\end{enumerate}
+\mac{Confira (b) derivando: $\partial^2F/\partial x\partial y$ deve devolver a conjunta original só na região $x\le y$.}
+
+\tit{Ex.\ 14 — Geométricas i.i.d.}
+\ferr{Seções 4, 17, 18.}
+\begin{enumerate}
+\item Escreva $P(X=Y)=\sum_{k\ge0}P(X=k)P(Y=k)$ usando a independência; reconheça uma série geométrica de razão $(1-p)^2$ e some (Seção 18).
+\item Para $P(X<Y)$, ou some diretamente a série dupla (fixe $x$, some em $y>x$ usando a cauda da geométrica), ou use o argumento de \textbf{simetria} da Seção 17: os eventos $\{X<Y\}$ e $\{X>Y\}$ têm a mesma probabilidade e, junto com $\{X=Y\}$, particionam o espaço.
+\end{enumerate}
+\mac{O caminho da simetria é uma linha; o da série dupla é uma boa conferência.}
+\arm{Aqui a geométrica está definida em $\{0,1,2,\dots\}$ (número de fracassos). Usar a versão em $\{1,2,\dots\}$ muda o resultado.}
+
+\tit{Ex.\ 15 — Ponto uniforme no círculo}
+\ferr{Seções 10, 6, 16.}
+\begin{enumerate}
+\item Escreva a densidade conjunta constante igual ao inverso da área do disco, no suporte $x^2+y^2\le r^2$.
+\item[(a)] $f_X(x)$: fixe $x$ e integre em $y$ entre os limites dados pela circunferência, $\pm\sqrt{r^2-x^2}$; o resultado é proporcional ao comprimento da corda (lei do semicírculo). Dê o suporte $|x|\le r$. Por simetria, $f_Y$ tem a mesma forma. Comente: as marginais \emph{não} são uniformes e as variáveis não são independentes (suporte circular).
+\item[(b)] $\{X^2+Y^2\le a^2\}$ é um disco concêntrico: use a razão de áreas (Seção 10) — e não esqueça de tratar o caso $a>r$, em que a probabilidade satura.
+\end{enumerate}
+\mac{Coordenadas polares (Seção 16) tornam (b) imediato e também dão a distribuição do raio, útil para conferir.}
+
+\tit{Ex.\ 16 — $f=k(x^2+y)$ sob a parábola}
+\ferr{Seções 5, 6, 7, 9.}
+\begin{enumerate}
+\item[0.] O suporte $0\le y\le 1-x^2$ exige $1-x^2\ge0$, logo $x$ varia em um intervalo simétrico — deduza-o e desenhe a região sob a parábola.
+\item[(a)] $k$ pela normalização, integrando primeiro em $y$ (limites 0 e $1-x^2$) e depois em $x$.
+\item[(b)] $f_X$: mesma integral interna, sem normalizar no fim. $f_Y$: fixe $y$ e integre em $x$ entre $\pm\sqrt{1-y}$, com $y\in[0,1]$.
+\item[(c)] Esboce: identifique zeros nas bordas, simetria (ou ausência dela) e pontos de máximo — basta o comportamento qualitativo, com os valores nas extremidades.
+\item[(d)] $\{Y<X\}$: a fronteira é a reta $y=x$; ache onde ela corta a parábola (resolva $x=1-x^2$) e note que a região só existe para $x>0$. Divida em partes se necessário.
+\item[(e)] Integre a marginal de $X$ no intervalo pedido — não precisa da conjunta.
+\item[(f)] Para a FDC geral, particione o plano segundo as retas $x=\pm1$, $y=0$, $y=1$ e a parábola; em cada bloco a integral acumulada tem forma diferente. Apresente como função por partes e confira continuidade e limites.
+\end{enumerate}
+\arm{Em (f), dentro da região curva os limites de integração dependem de $\min(y,\,1-u^2)$ — é o item mais trabalhoso da lista; faça o desenho antes de escrever qualquer integral.}
+
+\tit{Ex.\ 17 — $|X-Y|<10$ com uniformes}
+\ferr{Seções 10, 17.}
+\begin{enumerate}
+\item Independentes e uniformes em $(0,60)$ $\Rightarrow$ o par é uniforme no quadrado de lado 60 (justifique via produto das densidades).
+\item O evento é a faixa entre as retas $y=x-10$ e $y=x+10$. Calcule a área da faixa dentro do quadrado; o caminho curto é pelo complementar (dois triângulos retângulos congruentes nos cantos).
+\item Divida pela área total do quadrado.
+\end{enumerate}
+\mac{Generalize mentalmente: com lado $L$ e faixa $c$, a resposta é $1-\big(\frac{L-c}{L}\big)^2$; use isso apenas como conferência do seu desenho.}
+
+\tit{Ex.\ 18 — $P(X-kY>0)$ com exponenciais}
+\ferr{Seções 5, 9, 17.}
+\begin{enumerate}
+\item Escreva a conjunta como produto (independência) no quadrante positivo.
+\item O evento é o semiplano $x>ky$; intersectado com o quadrante, dá a região $\{y>0,\ x>ky\}$. Monte a integral iterada integrando \emph{primeiro em $x$}, de $ky$ a $\infty$ — a integral interna sai fechada e deixa uma exponencial em $y$.
+\item Integre em $y$ de 0 a $\infty$, reconheça o núcleo exponencial com taxa combinada e apresente a expressão pedida.
+\item Verifique casos-limite como conferência: $k\to0$ e $k\to\infty$ devolvem valores que você consegue prever.
+\end{enumerate}
+\mac{Alternativa elegante: condicione em $Y=y$ e use $P(X>ky)=e^{-\lambda_1 ky}$, depois integre contra a densidade de $Y$ — mesma conta, menos escrita.}
+
+\tit{Ex.\ 19 — $U=X$, $V=XY$ com sinais $\pm1$}
+\ferr{Seções 4, 8, 13(c).}
+\begin{enumerate}
+\item[(a)] Construa a tabela conjunta de $(U,V)$ a partir dos 4 pares equiprováveis de $(X,Y)$. Calcule as marginais de $U$ e de $V$ e teste a fatoração em todas as 4 células. A lição: “ambas dependem de $X$” não impede independência — a dependência funcional não é dependência probabilística.
+\item[(b)] $F_{U,V}(u,v)$ é uma escada bidimensional: particione o plano pelas retas $u=-1$, $u=1$, $v=-1$, $v=1$ e acumule as massas. Escreva por partes (9 regiões) ou, se concluiu independência em (a), como produto das FDCs marginais — justificando.
+\item[(c)] Localize a região $\{u\le 1/2,\ v>1/2\}$ na tabela: quais pontos de massa pertencem a ela? Some.
+\end{enumerate}
+\arm{Não confunda “$V$ é função de $X$ e $Y$” com dependência estatística. Prove com a tabela, não com intuição.}
+
+\tit{Ex.\ 20 — $Y=X^{1/2}$, $X\sim\exp(1/2)$ (Weibull)}
+\ferr{Seções 13(a),(b).}
+\begin{enumerate}
+\item Fixe o suporte: $X>0\Rightarrow Y>0$; a raiz é estritamente crescente, logo há inversa única, $x=y^2$.
+\item Caminho 1 (FDC): $F_Y(y)=P(\sqrt X\le y)=P(X\le y^2)=F_X(y^2)$; derive em $y$ pela regra da cadeia.
+\item Caminho 2 (mudança de variável): aplique a fórmula com $|dx/dy|$.
+\item Compare o resultado com a forma geral da Weibull e identifique os parâmetros; confirme que a densidade obtida integra 1.
+\end{enumerate}
+\arm{Atenção à parametrização de $\exp(1/2)$: taxa $\lambda=1/2$ ou média $1/2$? Declare qual você usou — o enunciado sugere taxa, para casar com os parâmetros 2 e 1/2 da Weibull.}
+
+\tit{Ex.\ 21 — $Y=e^X$, $X\sim N(0,1)$ (lognormal)}
+\ferr{Seções 13(a),(b), 11.}
+\begin{enumerate}
+\item Suporte: a exponencial é positiva e crescente, logo $Y>0$ e a inversa é $x=\ln y$.
+\item $F_Y(y)=P(X\le \ln y)=\Phi(\ln y)$ para $y>0$; derive, lembrando que $\frac{d}{dy}\ln y=1/y$.
+\item Escreva a densidade final destacando o fator $1/y$ e o núcleo normal em $\ln y$; indique como ela generaliza para $N(\mu,\sigma^2)$.
+\end{enumerate}
+\mac{Conferência rápida: a densidade deve tender a 0 quando $y\to0^{+}$ e ter cauda direita pesada.}
+
+\tit{Ex.\ 22 — $X+Y$ e $X/Y$ independentes (exp i.i.d.)}
+\ferr{Seções 14, 15.}
+\begin{enumerate}
+\item Defina $U=X+Y$ e $V=X/Y$ e \textbf{inverta}: escreva $x$ e $y$ em função de $u$ e $v$ (isole $y$ primeiro, usando $x=vy$).
+\item Calcule o jacobiano; convém obter $\partial(u,v)/\partial(x,y)$ e inverter.
+\item Determine o novo suporte: $x,y>0$ implica quais restrições em $(u,v)$? (Deve ser um retângulo — é isso que viabiliza a conclusão.)
+\item Substitua na fórmula da Seção 14, simplifique e verifique se $f_{U,V}$ se separa em (função de $u$)$\times$(função de $v$). Conclua e, de brinde, identifique as distribuições marginais de $U$ e de $V$ pelos núcleos.
+\end{enumerate}
+\arm{A conclusão de independência exige as \emph{duas} coisas: fatoração do integrando \emph{e} suporte retangular no novo par. Diga as duas.}
+
+\tit{Ex.\ 23 — $X+Y$, $X-Y$, $X/Y$ com uniformes}
+\ferr{Seções 14, 15, 9.}
+Para cada uma das três funções, escolha uma estratégia e siga-a até a densidade completa, \emph{com suporte}:
+\begin{itemize}
+\item \textbf{Soma:} convolução (Seção 15) com $f_X=f_Y=1$ em $(0,1)$; o cuidado está nos limites: o integrando é 1 apenas onde $0<x<1$ \emph{e} $0<s-x<1$. Isso divide a resposta em dois trechos ($s<1$ e $s\ge1$) — a famosa densidade triangular. Alternativa geométrica: $P(X+Y\le s)$ é área de triângulo/trapézio no quadrado unitário; derive em $s$.
+\item \textbf{Diferença:} mesma técnica; o suporte é $(-1,1)$ e a forma também é triangular por simetria.
+\item \textbf{Razão:} use a fórmula da razão ou o método da FDC, $P(X/Y\le w)=P(X\le wY)$, que é uma \emph{área} no quadrado unitário delimitada pela reta $x=wy$; separe os casos $0<w\le1$ e $w>1$ e derive em $w$.
+\end{itemize}
+\mac{Em todos, cheque que a densidade obtida integra 1 e é contínua nos pontos de junção dos trechos.}
+
+\tit{Ex.\ 24 — $Z=X/(X+Y)$ é $U[0,1]$}
+\ferr{Seções 14, 13(a).}
+\begin{enumerate}
+\item Caminho do jacobiano: tome $Z=X/(X+Y)$ e a auxiliar $W=X+Y$; inverta ($x=zw$, $y=w(1-z)$), calcule $|J|$, obtenha $f_{Z,W}$ e \textbf{integre $w$} de 0 a $\infty$ para chegar em $f_Z$ (reconheça uma integral do tipo Gama).
+\item Caminho direto: $P(Z\le z)=P\big(X(1-z)\le zY\big)$ e integre a conjunta na região correspondente; derive em $z$.
+\item Conclua identificando a densidade constante em $[0,1]$; observe, de passagem, que $Z\perp W$ — resultado análogo ao do Ex.\ 22.
+\end{enumerate}
+\arm{Determine o suporte de $Z$ antes: como $X,Y>0$, $Z$ está confinado a um intervalo — a densidade fora dele é zero.}
+
+\tit{Ex.\ 25 — $Z=X^2+Y^2$ e $W=X/Y$ com normais}
+\ferr{Seções 14, 16, 13(c).}
+\begin{enumerate}
+\item Escreva a conjunta de $(X,Y)$: produto de duas $N(0,1)$, cujo expoente depende só de $x^2+y^2$ — a densidade é \emph{radialmente simétrica}. Isso é a chave.
+\item A transformação $(x,y)\mapsto(z,w)$ \textbf{não é bijetora}: os pontos $(x,y)$ e $(-x,-y)$ dão o mesmo $(z,w)$. Particione o plano em dois semiplanos onde ela é bijetora, aplique o jacobiano em cada um e \textbf{some} as duas contribuições (Seção 13c aplicada ao caso bivariado).
+\item Alternativa mais limpa: passe a polares (Seção 16). Mostre que o raio ao quadrado e o ângulo são independentes, e escreva $Z$ e $W$ em função de $\rho$ e $\theta$ ($W=\cot\theta$ ou $\tan$, conforme a convenção).
+\item Verifique a fatoração de $f_{Z,W}$ e identifique cada marginal: uma delas é um modelo exponencial/qui-quadrado, a outra é a Cauchy (compare com a densidade da Seção 11).
+\end{enumerate}
+\mac{Conferência: a densidade candidata a Cauchy deve integrar 1 em toda a reta usando $\int \frac{dw}{1+w^2}=\arctan w$.}
+
+\tit{Ex.\ 26 — Sistema \emph{standby}: $X_1+X_2+X_3$}
+\ferr{Seções 12, 14, 11.}
+\begin{enumerate}
+\item[(a)] \textbf{Via FGM:} escreva $M_{X_i}(t)$ da exponencial (com o domínio $t<\lambda$), use a propriedade do produto para independentes, obtenha $M_{S_3}(t)$, compare com a FGM da Gama e invoque a \emph{unicidade} para nomear a distribuição, com seus parâmetros. Escreva a densidade resultante.
+\item[(b)] \textbf{Via Jacobiano:} defina $S=X_1+X_2+X_3$ e duas auxiliares convenientes (por exemplo $U=X_1$, $V=X_1+X_2$), inverta o sistema, calcule o jacobiano (deve dar módulo 1 — verifique), determine o novo suporte (as desigualdades $0<u<v<s$) e integre as auxiliares para obter $f_S$. Alternativamente, faça duas convoluções encadeadas (Seção 15): primeiro $X_1+X_2$, depois somando $X_3$.
+\item Compare as duas respostas: devem coincidir. Comente qual método foi mais econômico e por quê.
+\end{enumerate}
+\mac{Na integração das auxiliares, o integrando não depende delas (só de $s$): a integral vira o \emph{volume} da região $0<u<v<s$, que é elementar.}
+
+\tit{Checklist final}
+\begin{itemize}
+\item Desenhei o suporte antes de montar qualquer integral?
+\item Toda marginal e toda densidade obtida vem acompanhada do seu domínio de validade?
+\item Testei independência pelo suporte \emph{e} pela fatoração, e não apenas por uma delas?
+\item Em transformações: inverti explicitamente, calculei $|J|$, e determinei o \emph{novo suporte}? A transformação era bijetora?
+\item As densidades obtidas são não negativas e integram 1? Verifiquei ao menos uma delas?
+\item Nas FDCs por partes: continuidade nas junções, limites 0 e 1, e monotonicidade?
+\end{itemize}
+
+\end{multicols*}
+\end{document}

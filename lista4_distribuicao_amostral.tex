@@ -1,0 +1,414 @@
+\documentclass[a4paper,8pt]{extarticle}
+
+%============================ PACOTES =============================
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+% Carrega hifenização em português apenas se o babel-portugues estiver instalado
+\IfFileExists{portuges.ldf}{\usepackage[brazilian]{babel}}{}
+\usepackage[margin=0.5cm,landscape]{geometry}
+\usepackage{multicol}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage[expansion=false]{microtype}
+
+%========================= AJUSTES DE LAYOUT ======================
+\setlength{\columnsep}{0.38cm}
+\setlength{\columnseprule}{0.2pt}
+\renewcommand{\columnseprulecolor}{\color{gray!45}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+\setlength{\emergencystretch}{3em}
+\hyphenpenalty=50
+\tolerance=9999
+\pagestyle{plain}
+
+\definecolor{azul}{RGB}{28,58,110}
+\definecolor{vinho}{RGB}{140,30,50}
+\definecolor{verde}{RGB}{20,95,70}
+\definecolor{cinza}{RGB}{240,240,244}
+
+\titleformat{\section}{\normalfont\bfseries\small\color{azul}}{\thesection.}{0.4em}{}
+\titlespacing*{\section}{0pt}{6pt}{2pt}
+\titleformat{\subsection}{\normalfont\bfseries\footnotesize\color{vinho}}{\thesubsection}{0.4em}{}
+\titlespacing*{\subsection}{0pt}{4pt}{1pt}
+
+\setlist[itemize]{leftmargin=0.9em,itemsep=0.5pt,topsep=1pt,parsep=0pt}
+\setlist[enumerate]{leftmargin=1.2em,itemsep=0.5pt,topsep=1pt,parsep=0pt}
+
+\newcommand{\tit}[1]{\vspace{2pt}\textcolor{azul}{\rule{\linewidth}{0.6pt}}\\[1pt]\textbf{\textcolor{azul}{#1}}\\[1pt]}
+\newcommand{\mac}[1]{\textcolor{verde}{\textbf{Macete:}} #1\par}
+\newcommand{\arm}[1]{\textcolor{vinho}{\textbf{Armadilha:}} #1\par}
+\newcommand{\ferr}[1]{\textbf{Ferramentas:} #1\par}
+\newcommand{\obj}[1]{\textbf{Objetivo:} #1\par}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Med}{\operatorname{Md}}
+\newcommand{\ind}{\stackrel{iid}{\sim}}
+\newcommand{\R}[1]{\texttt{\footnotesize #1}}
+
+%================================================================
+\begin{document}
+\raggedright
+\footnotesize
+
+\begin{center}
+{\normalsize\bfseries\color{azul} Inferência Estatística Avançada — Módulo 5: Distribuição Amostral}\\[1pt]
+{\scriptsize\itshape Resumo teórico exaustivo + guia de resolução (sem gabarito) — DEST/UFPR}
+\end{center}
+\vspace{-4pt}
+
+\begin{multicols*}{5}
+\scriptsize
+
+%==================================================================
+%                       PARTE I — TEORIA
+%==================================================================
+\begin{center}\colorbox{cinza}{\parbox{0.94\linewidth}{\centering\bfseries\color{azul} PARTE I — RESUMO TEÓRICO}}\end{center}
+
+\tit{1. Vocabulário fundamental da Inferência}
+\begin{itemize}
+\item \textbf{População:} conjunto de \emph{todas} as unidades (ou, formalmente, a variável aleatória / distribuição de probabilidade) sobre o qual se quer concluir algo. Pode ser finita (lista de $N$ elementos) ou infinita/conceitual (todos os indivíduos que poderiam receber o tratamento).
+\item \textbf{Amostra:} subconjunto de $n$ unidades observadas, $Y_1,\dots,Y_n$. Amostra aleatória simples (AAS) \emph{com reposição} $\Rightarrow$ $Y_1,\dots,Y_n$ i.i.d.\ com a distribuição da população.
+\item \textbf{Parâmetro} ($\theta$): quantidade \emph{numérica fixa e desconhecida} que descreve a população ($\mu$, $\sigma^2$, $p$, mediana populacional). Não é aleatório.
+\item \textbf{Estatística:} qualquer função da amostra que não depende de parâmetros desconhecidos, $T=T(Y_1,\dots,Y_n)$. É \emph{variável aleatória}.
+\item \textbf{Estimador:} a estatística vista como \emph{regra} usada para estimar $\theta$ (ex.: $\bar Y$, $\hat p$, $S^2$, $\Med$). Escreve-se $\hat\theta$; é v.a., escrita com letra maiúscula.
+\item \textbf{Estimativa:} o \emph{valor numérico} que o estimador assume na amostra efetivamente observada (ex.: $\hat p=0{,}84$). É um número, não é aleatório.
+\item \textbf{Distribuição amostral:} a distribuição de probabilidade do \emph{estimador} (da estatística), obtida ao considerar todas as amostras possíveis de tamanho $n$. Responde: “como esse número varia de amostra para amostra?”
+\item \textbf{Erro padrão (EP):} desvio padrão da distribuição amostral, $EP(\hat\theta)=\sqrt{\Var(\hat\theta)}$.
+\end{itemize}
+
+\tit{2. Parâmetros de uma população finita}
+Para $\{x_1,\dots,x_N\}$:
+\[\mu=\frac1N\sum_{i=1}^N x_i,\qquad \sigma^2=\frac1N\sum_{i=1}^N (x_i-\mu)^2 .\]
+Atenção: divide-se por $N$ (não $N-1$), pois é \emph{parâmetro}, não estimativa. Proporção populacional de uma categoria:
+\[p=\frac{\#\{\text{elementos na categoria}\}}{N}.\]
+Toda proporção é uma média de indicadores: se $X_i=1$ quando o elemento pertence à categoria e $0$ caso contrário, então $p=\mu_X$ e $\sigma_X^2=p(1-p)$.
+
+\tit{3. Enumeração de amostras com reposição}
+Com reposição e ordem importando, de $N$ elementos tomando $n$:
+\[\#\text{amostras}=N^{\,n},\qquad P(\text{cada amostra})=\frac{1}{N^{n}} .\]
+Para $N=4$, $n=2$: $4^2=16$ pares ordenados equiprováveis, cada um com probabilidade $1/16$. A enumeração sistemática é uma \emph{tabela de dupla entrada} $4\times4$ (linha = 1º sorteio, coluna = 2º sorteio).
+
+Construção da distribuição amostral de uma estatística $T$ em população finita:
+\begin{enumerate}
+\item liste as $N^n$ amostras;
+\item calcule $t=T(\text{amostra})$ em cada uma;
+\item agrupe valores iguais: $P(T=t)=\dfrac{\#\text{amostras com esse }t}{N^{n}}$;
+\item verifique $\sum_t P(T=t)=1$.
+\end{enumerate}
+
+\tit{4. Propriedades de estimadores}
+\begin{itemize}
+\item \textbf{Viés (bias):} $B(\hat\theta)=\E[\hat\theta]-\theta$. O estimador é \textbf{não viesado (centrado)} se $\E[\hat\theta]=\theta$, isto é, se a \emph{média da distribuição amostral} coincide com o parâmetro.
+\item \textbf{EQM:} $EQM(\hat\theta)=\E[(\hat\theta-\theta)^2]=\Var(\hat\theta)+B(\hat\theta)^2$.
+\item \textbf{Eficiência:} entre não viesados, prefere-se o de menor variância.
+\item \textbf{Consistência:} $\hat\theta\to\theta$ em probabilidade quando $n\to\infty$ (Lei dos Grandes Números).
+\item Estimadores clássicos não viesados: $\bar Y$ para $\mu$; $\hat p$ para $p$; $S^2=\frac{1}{n-1}\sum(Y_i-\bar Y)^2$ para $\sigma^2$. Já $\Med$ (mediana amostral) e $S$ \emph{não} são, em geral, não viesados.
+\end{itemize}
+
+\tit{5. Álgebra de esperanças e variâncias}
+Para constantes $a,b$ e v.a.\ quaisquer:
+\[\E[aX+bY+c]=a\E[X]+b\E[Y]+c\]
+\[\Var(aX+b)=a^2\Var(X)\]
+Se $X\perp Y$ (independentes):
+\[\Var(aX+bY)=a^2\Var(X)+b^2\Var(Y).\]
+Consequência direta para $Y_i$ i.i.d.\ com média $\mu$ e variância $\sigma^2$:
+\[\E\Big[\sum_{i=1}^n Y_i\Big]=n\mu,\qquad \Var\Big[\sum_{i=1}^n Y_i\Big]=n\sigma^2 .\]
+
+\tit{6. Distribuição amostral da média $\bar Y$}
+Com $Y_1,\dots,Y_n$ i.i.d.\ ($\mu,\sigma^2$):
+\[\E[\bar Y]=\mu,\qquad \Var(\bar Y)=\frac{\sigma^2}{n},\qquad EP=\frac{\sigma}{\sqrt n}.\]
+Isso vale \emph{sempre}, qualquer que seja a forma da população. O que muda é a \emph{forma} da distribuição de $\bar Y$:
+\begin{itemize}
+\item \textbf{População normal:} $\bar Y\sim N\!\big(\mu,\sigma^2/n\big)$ \emph{exatamente}, para qualquer $n$ (inclusive $n$ pequeno).
+\item \textbf{População qualquer, $n$ grande:} aproximação normal via TLC.
+\item \textbf{População finita, sem reposição:} $\Var(\bar Y)=\frac{\sigma^2}{n}\cdot\frac{N-n}{N-1}$ (fator de correção de população finita). Com reposição, o fator \emph{não} entra.
+\end{itemize}
+Padronização:
+\[Z=\frac{\bar Y-\mu}{\sigma/\sqrt n}\sim N(0,1).\]
+Observe que aumentar $n$ \emph{não} muda o centro, apenas \emph{reduz} a dispersão de $\bar Y$ na razão $1/\sqrt n$ (concentração em torno de $\mu$).
+
+\tit{7. Teorema do Limite Central (TLC)}
+Se $Y_1,\dots,Y_n$ são i.i.d.\ com média $\mu$ e variância $0<\sigma^2<\infty$, então
+\[\frac{\bar Y-\mu}{\sigma/\sqrt n}\xrightarrow{d} N(0,1)\quad (n\to\infty),\]
+equivalentemente $\sum_i Y_i \approx N(n\mu,\,n\sigma^2)$. Regra prática: $n\ge 30$ costuma bastar; se a população já é simétrica/normal, $n$ pequeno serve; se é muito assimétrica, exige-se $n$ maior. O TLC \emph{não} exige conhecer $\mu$: ele permite calcular probabilidades sobre o \emph{desvio} $\bar Y-\mu$ sem saber $\mu$.
+
+\tit{8. Soma / total amostral}
+Para $Y_i\ind N(\mu,\sigma^2)$:
+\[S_n=\sum_{i=1}^n Y_i \sim N(n\mu,\ n\sigma^2),\qquad EP(S_n)=\sigma\sqrt n .\]
+Equivalência útil: $P(S_n<c)=P\!\big(\bar Y< c/n\big)$ — pode-se trabalhar com o total ou com a média, o resultado é o mesmo. Cuidado com \textbf{unidades} (g vs.\ kg) antes de padronizar.
+
+\tit{9. Distribuição amostral da proporção $\hat p$}
+Seja $X=$ nº de “sucessos” em $n$ ensaios de Bernoulli independentes com probabilidade $p$. Então $X\sim \text{Bin}(n,p)$ e $\hat p = X/n$.
+\[P(X=k)=\binom{n}{k}p^k(1-p)^{n-k},\ k=0,\dots,n\]
+\[\E[\hat p]=p,\qquad \Var(\hat p)=\frac{p(1-p)}{n}\]
+\[EP(\hat p)=\sqrt{p(1-p)/n}.\]
+Suporte de $\hat p$: $\{0,\tfrac1n,\tfrac2n,\dots,1\}$ (é \emph{discreto}).
+\textbf{Cálculo exato:} $P(\hat p<a)=P(X<na)=P(X\le \lceil na\rceil-1)=\sum_{k}\binom{n}{k}p^k(1-p)^{n-k}$.
+\textbf{Aproximação normal} (válida se $np\ge5$ e $n(1-p)\ge5$; alguns textos exigem $np(1-p)>9$):
+\[\hat p \approx N\!\Big(p,\ \frac{p(1-p)}{n}\Big),\qquad Z=\frac{\hat p-p}{\sqrt{p(1-p)/n}} .\]
+\textbf{Correção de continuidade} (ao aproximar o discreto pelo contínuo, trabalhando em $X$): $P(X\le k)\approx P\big(Z\le \frac{k+0{,}5-np}{\sqrt{np(1-p)}}\big)$ e $P(X\ge k)\approx P\big(Z\ge \frac{k-0{,}5-np}{\sqrt{np(1-p)}}\big)$.
+
+\tit{10. Distribuição Normal}
+$Y\sim N(\mu,\sigma^2)$, densidade simétrica em torno de $\mu$, forma de sino:
+\[f(y)=\frac{1}{\sigma\sqrt{2\pi}}\exp\!\Big[-\frac{(y-\mu)^2}{2\sigma^2}\Big].\]
+Propriedades operacionais:
+\begin{itemize}
+\item $Z=(Y-\mu)/\sigma\sim N(0,1)$; $\Phi(z)=P(Z\le z)$.
+\item Simetria: $\Phi(-z)=1-\Phi(z)$; $P(|Z|<z)=2\Phi(z)-1$.
+\item $P(a<Y<b)=\Phi\!\big(\frac{b-\mu}{\sigma}\big)-\Phi\!\big(\frac{a-\mu}{\sigma}\big)$.
+\item Combinação linear de normais independentes é normal.
+\item \textbf{Problema inverso (quantil):} dado $\alpha$, ache $z_\alpha$ com $\Phi(z_\alpha)=\alpha$ e volte pela relação $y=\mu+z_\alpha\sigma$. Se a incógnita for $\mu$: $\mu=y-z_\alpha\sigma$.
+\item Regra empírica: $\approx68\%$ em $\mu\pm\sigma$, $95\%$ em $\mu\pm1{,}96\sigma$, $99{,}7\%$ em $\mu\pm3\sigma$.
+\end{itemize}
+
+\tit{11. Distribuição Qui-quadrado $\chi^2_{\nu}$}
+Definição: se $Z_1,\dots,Z_\nu\ind N(0,1)$, então $\sum_{i=1}^{\nu}Z_i^2\sim\chi^2_\nu$ ($\nu$ = graus de liberdade, gl).
+\begin{itemize}
+\item Suporte $(0,\infty)$; assimétrica à direita; torna-se mais simétrica quando $\nu$ cresce.
+\item $\E=\nu$, $\Var=2\nu$; moda $=\nu-2$ ($\nu\ge2$).
+\item Aditividade: $\chi^2_{\nu_1}+\chi^2_{\nu_2}\sim\chi^2_{\nu_1+\nu_2}$ se independentes.
+\item Caso particular da Gama: $\chi^2_\nu \equiv \text{Gama}(\nu/2,\,1/2)$.
+\item \textbf{Não é simétrica} $\Rightarrow$ as caudas devem ser buscadas separadamente; não existe relação do tipo $q_{1-\alpha}=-q_\alpha$.
+\item Ligação com a variância amostral: para $Y_i\ind N(\mu,\sigma^2)$,
+\[\frac{(n-1)S^2}{\sigma^2}\sim\chi^2_{n-1},\]
+e $\bar Y \perp S^2$ (independência, exclusiva do caso normal).
+\end{itemize}
+\emph{Nota de notação:} quando a lista escreve $Y\sim\chi_{16}$ leia como qui-quadrado com $16$ gl, $\chi^2_{16}$ (os valores pedidos, como $8{,}91$ e $32{,}85$, estão na escala de $\chi^2$ com $\E=16$).
+
+\tit{12. Distribuição $t$ de Student}
+Definição: se $Z\sim N(0,1)$, $V\sim\chi^2_\nu$ e $Z\perp V$, então
+\[T=\frac{Z}{\sqrt{V/\nu}}\sim t_\nu .\]
+\begin{itemize}
+\item Simétrica em torno de $0$: $P(T<-t)=P(T>t)$ e $P(-t\le T\le t)=1-2P(T>t)$.
+\item Caudas mais pesadas que a normal; $\E[T]=0$ ($\nu>1$), $\Var=\frac{\nu}{\nu-2}$ ($\nu>2$).
+\item $t_\nu\to N(0,1)$ quando $\nu\to\infty$; $t_1$ = Cauchy.
+\item Quantis: $t_{\nu,1-\alpha}=-t_{\nu,\alpha}$.
+\item Origem estatística: $\dfrac{\bar Y-\mu}{S/\sqrt n}\sim t_{n-1}$ (quando $\sigma$ é substituído por $S$).
+\item $T^2\sim F_{1,\nu}$.
+\end{itemize}
+
+\tit{13. Distribuição $F$ de Snedecor}
+Definição: $V_1\sim\chi^2_{\nu_1}$, $V_2\sim\chi^2_{\nu_2}$ independentes,
+\[F=\frac{V_1/\nu_1}{V_2/\nu_2}\sim F_{(\nu_1,\nu_2)} .\]
+\begin{itemize}
+\item Suporte $(0,\infty)$, assimétrica à direita; a \textbf{ordem dos gl importa}: $F_{(10,7)}\ne F_{(7,10)}$.
+\item Reciprocidade: se $F\sim F_{(\nu_1,\nu_2)}$ então $1/F\sim F_{(\nu_2,\nu_1)}$; logo
+\[F_{(\nu_1,\nu_2);\,\alpha}=\frac{1}{F_{(\nu_2,\nu_1);\,1-\alpha}},\]
+truque essencial para achar caudas inferiores em tabelas que só trazem a cauda superior.
+\item $\E[F]=\frac{\nu_2}{\nu_2-2}$ ($\nu_2>2$) — próximo de 1 para $\nu_2$ grande.
+\item Uso típico: razão de variâncias $\frac{S_1^2/\sigma_1^2}{S_2^2/\sigma_2^2}\sim F_{(n_1-1,\,n_2-1)}$.
+\end{itemize}
+
+\tit{14. Mapa das relações entre as distribuições}
+\begin{itemize}
+\item $Z^2\sim\chi^2_1$;\quad $\sum_{i=1}^{\nu}Z_i^2\sim\chi^2_\nu$.
+\item $Z/\sqrt{\chi^2_\nu/\nu}\sim t_\nu$;\quad $t_\nu^2\sim F_{(1,\nu)}$.
+\item $\dfrac{\chi^2_{\nu_1}/\nu_1}{\chi^2_{\nu_2}/\nu_2}\sim F_{(\nu_1,\nu_2)}$;\quad $F_{(\nu_1,\infty)}\cdot\nu_1\sim\chi^2_{\nu_1}$.
+\item $t_\infty=N(0,1)$;\quad $\chi^2_\nu\approx N(\nu,2\nu)$ para $\nu$ grande.
+\end{itemize}
+
+\tit{15. Probabilidades e quantis: tabela vs.\ software}
+Toda questão de distribuição cai em um de dois tipos:
+\begin{itemize}
+\item \textbf{Direto} (dado $y$, achar probabilidade): função de distribuição acumulada $F(y)=P(Y\le y)$.
+\item \textbf{Inverso} (dada probabilidade, achar $y$): função quantil $F^{-1}(\alpha)$.
+\end{itemize}
+Identidades que resolvem qualquer combinação:
+\[P(Y>y)=1-F(y)\]
+\[P(a<Y<b)=F(b)-F(a)\]
+\[P(Y>y)=\alpha \iff P(Y\le y)=1-\alpha .\]
+Em \R{R}: \R{pnorm/qnorm}, \R{pt/qt}, \R{pchisq/qchisq}, \R{pf/qf}, \R{pbinom/qbinom}; argumento \R{lower.tail=FALSE} devolve a cauda superior. Ex.: \R{pt(q, df=20)}, \R{qchisq(p, df=16)}, \R{pf(q, df1=10, df2=7, lower.tail=FALSE)}.
+Ao usar \textbf{tabelas impressas}: elas costumam trazer apenas \emph{cauda superior} (t, $\chi^2$, F) ou apenas $\Phi(z)$ para $z>0$ (normal). Use simetria (normal e $t$) e reciprocidade (F) para obter o que falta; interpole quando o valor não estiver tabelado.
+
+\tit{16. Estatísticas de ordem e mediana amostral}
+Ordene a amostra: $Y_{(1)}\le\cdots\le Y_{(n)}$.
+\[\Med=\begin{array}{l}Y_{((n+1)/2)},\ n\ \text{ímpar}\\[2pt] \tfrac{1}{2}\big(Y_{(n/2)}+Y_{(n/2+1)}\big),\ n\ \text{par}\end{array}\]
+A mediana também tem distribuição amostral: construída pela mesma receita da Seção 3. Fatos relevantes:
+\begin{itemize}
+\item $\E[\Med]$ nem sempre é igual à mediana populacional — em geral a mediana amostral é \emph{viesada} para a mediana populacional em populações assimétricas.
+\item Em populações simétricas, média e mediana populacionais coincidem, e $\E[\Med]=\mu$.
+\item A mediana é \emph{robusta} (resistente a valores extremos), mas menos eficiente que $\bar Y$ sob normalidade ($\Var(\Med)\approx \frac{\pi}{2}\frac{\sigma^2}{n}$, cerca de 57\% a mais).
+\item Caso especial importante: para $n=2$, a definição acima faz a mediana coincidir com a semi-soma dos dois valores — compare com a definição de média.
+\end{itemize}
+
+\tit{17. Probabilidade condicional e truncamento}
+\[P(A\mid B)=\frac{P(A\cap B)}{P(B)},\ P(B)>0 .\]
+Se $A\subset B$ (por exemplo $\{Y>1400\}\subset\{Y>1200\}$), então $A\cap B=A$ e
+\[P(Y>b\mid Y>a)=\frac{P(Y>b)}{P(Y>a)},\quad b>a .\]
+Interprete “dos que fizeram X, qual a proporção que fez Y” como probabilidade condicional.
+
+\tit{18. Eventos do tipo “dentro de $c$ unidades”}
+\[|\bar Y-\mu|<c \iff -c<\bar Y-\mu<c\]
+\[P(|\bar Y-\mu|<c)=P\!\Big(|Z|<\frac{c}{\sigma/\sqrt n}\Big)=2\Phi\!\Big(\frac{c\sqrt n}{\sigma}\Big)-1 .\]
+Note que $\mu$ \emph{desaparece} da conta: o resultado independe do valor de $\mu$. O argumento $c\sqrt n/\sigma$ cresce com $n$ e decresce com $\sigma$ — use isso para análises qualitativas (“a probabilidade aumenta ou diminui?”).
+
+\tit{19. Resultados “incomuns” e escore $z$}
+Um valor observado é considerado incomum quando cai muito longe do centro da \emph{distribuição amostral correta}. Calcule $z=(\text{observado}-\text{esperado})/EP$ e comente $P(|Z|>|z|)$. Erro conceitual clássico: comparar uma \emph{média de $n$ observações} com o desvio padrão \emph{individual} $\sigma$ em vez do erro padrão $\sigma/\sqrt n$ — a média é muito menos variável que uma observação isolada.
+
+%==================================================================
+%                    PARTE II — GUIA (SEM GABARITO)
+%==================================================================
+\vspace{4pt}
+\begin{center}\colorbox{cinza}{\parbox{0.94\linewidth}{\centering\bfseries\color{azul} PARTE II — GUIA DE RESOLUÇÃO}}\end{center}
+\textit{Nenhum resultado numérico é fornecido: apenas o caminho.}
+
+\tit{Exercício 1 — Moscas: proporção de fêmeas}
+\obj{Construir “na mão” a distribuição amostral de um estimador ($\hat p$) e verificar se ele é não viesado.}
+\textbf{Tradução:} população finita com $N=4$ (Mike, Ana, Bárbara, Cristina); a característica de interesse é “ser fêmea” (variável indicadora); sorteio de $n=2$ \emph{com reposição}.
+\ferr{Seções 2, 3, 4 e 9.}
+Passo a passo:
+\begin{enumerate}
+\item Escreva a tabela $4\times4$ dos pares ordenados (1º sorteio nas linhas, 2º nas colunas) $\Rightarrow$ $4^2$ amostras, todas com probabilidade $1/16$. \emph{Mike pode aparecer duas vezes} — é com reposição.
+\item Em cada amostra, conte quantas fêmeas há e divida por 2. Os únicos valores possíveis de $\hat p$ são $0$, $0{,}5$ e $1$.
+\item Agrupe: para cada valor distinto, some as probabilidades das amostras que o produzem. Monte a tabela com colunas $\hat p$ e $P(\hat p)$ e confira se soma $1$.
+\item (b) Aplique $\E[\hat p]=\sum \hat p\cdot P(\hat p)$ sobre a tabela do item (a).
+\item (c) Calcule à parte a proporção populacional $p$ (contagem de fêmeas sobre $N=4$) e compare com o resultado de (b); nomeie a propriedade envolvida (Seção 4).
+\end{enumerate}
+\mac{Como $\hat p$ é média de indicadores, o item (b) também pode ser conferido pela teoria: $\E[\hat p]=p$ e $\Var(\hat p)=p(1-p)/n$ — use isso como verificação da tabela.}
+\arm{Não confunda amostra ordenada com combinação: (Ana, Mike) e (Mike, Ana) são \emph{duas} das 16 amostras, e é por isso que $\hat p=0{,}5$ é mais provável que os extremos.}
+
+\tit{Exercício 2 — Idades dos presidentes: média}
+\obj{Repetir a construção da distribuição amostral, agora para $\bar Y$ em uma população quantitativa finita, e verificar $\E[\bar Y]=\mu$.}
+\ferr{Seções 2, 3, 5, 6.}
+Passo a passo:
+\begin{enumerate}
+\item (a) Tabela $4\times4$ com os pares ordenados das quatro idades, com reposição. Inclua os pares repetidos $(x_i,x_i)$.
+\item (b) Em cada célula calcule $\bar y=(y_1+y_2)/2$. Agrupe as \emph{médias iguais}: algumas médias aparecem uma única vez (as das diagonais), outras aparecem duas vezes ($(a,b)$ e $(b,a)$). Monte a tabela de distribuição de probabilidade com $P=\text{freq}/16$; verifique a soma.
+\item (c) Calcule $\mu$ pela Seção 2 (média das 4 idades) e $\E[\bar Y]=\sum \bar y\,P(\bar y)$ pela tabela; compare e conclua sobre viés.
+\end{enumerate}
+\mac{Para não errar o agrupamento, organize as 16 médias em ordem crescente antes de contar frequências. A distribuição resultante é simétrica em torno de $\mu$ — use a simetria como conferência.}
+\mac{Extensão útil: calcule também $\Var(\bar Y)$ pela tabela e compare com $\sigma^2/n$ (Seção 6). Deve bater — lembre de usar $\sigma^2$ com divisor $N$.}
+\arm{Não use divisor $n-1$ ao calcular a variância \emph{populacional} das 4 idades.}
+
+\tit{Exercício 3 — Mesma população, mediana}
+\obj{Comparar o comportamento amostral de dois estimadores do centro.}
+\ferr{Seções 3, 4, 16.}
+Passo a passo:
+\begin{enumerate}
+\item Reaproveite exatamente a mesma lista das 16 amostras do Exe 2.
+\item Aplique a \emph{definição de mediana para $n$ par} (Seção 16) em cada amostra. Antes de calcular, releia a definição e responda: o que essa definição produz quando a amostra tem apenas dois elementos?
+\item Monte a tabela da distribuição amostral de $\Med$ e calcule $\E[\Med]$.
+\item Compare com a mediana \emph{populacional} das quatro idades (ordene as 4 idades e aplique a definição para $N$ par) e também com $\mu$. Conclua: $\Med$ é ou não viesada \emph{para a mediana populacional}? E para $\mu$?
+\end{enumerate}
+\mac{A pergunta de fundo, que o exercício quer que você enuncie: “a média das medianas amostrais reproduz o alvo?” Discuta o resultado à luz do fato de a população aqui ser (ou não) simétrica.}
+\arm{Cuidado com o alvo da comparação: o viés da mediana amostral deve ser julgado em relação à \emph{mediana} populacional, não automaticamente em relação a $\mu$.}
+
+\tit{Exercício 4 — Vacina: 80\% de imunização}
+\textbf{(a)} \obj{Preencher o glossário da Seção 1 no contexto do problema.}
+Para cada item, pergunte-se:
+\begin{itemize}
+\item \emph{População}: sobre quem se quer concluir? (todos os indivíduos que tomam a vacina, não os 25).
+\item \emph{Parâmetro}: qual o número fixo desconhecido que o fabricante afirma valer $0{,}80$? Qual símbolo?
+\item \emph{Estimador}: qual regra/função da amostra estima esse parâmetro? Escreva-a explicitamente com $X$ e $n=25$.
+\item \emph{Estimativa}: existe valor numérico observado no enunciado? Se não, diga qual seria a forma dela.
+\item \emph{Distribuição amostral}: qual a lei de probabilidade do estimador do item anterior, com quais parâmetros? (Seção 9.)
+\end{itemize}
+\textbf{(b)} \ferr{Seção 9.}
+\begin{enumerate}
+\item Escreva o evento em termos de $X$: $\{\hat p<0{,}75\}\equiv\{X<25\cdot0{,}75\}$ e $\{\hat p>0{,}85\}\equiv\{X>25\cdot0{,}85\}$. Converta a fronteira para número inteiro de sucessos e decida se a desigualdade é estrita (isso muda o inteiro incluído!).
+\item Escolha o método: (i) exato via \R{pbinom} ou soma de termos binomiais; (ii) aproximação normal com $\E[\hat p]$ e $EP$ da Seção 9 — antes, cheque as condições $np\ge5$, $n(1-p)\ge5$.
+\item Se optar pela aproximação, decida se aplica correção de continuidade e padronize.
+\end{enumerate}
+\mac{Sob a hipótese “o fabricante está correto”, use $p=0{,}80$ para calcular $\E$ e $EP$ — o enunciado está pedindo probabilidades \emph{sob} esse valor.}
+\arm{$0{,}75$ e $0{,}85$ não são simétricos em torno de $0{,}80$ na escala de $X$? Verifique: $25\times0{,}75$ e $25\times0{,}85$ produzem fronteiras cuja distância a $np$ pode ser diferente após a correção de continuidade. Calcule cada cauda separadamente.}
+
+\tit{Exercício 5 — Normal: indivíduo vs.\ média}
+\obj{Contrastar a variabilidade de \emph{uma observação} com a da \emph{média de $n$ observações}.}
+\ferr{Seções 6 e 10.}
+Passo a passo:
+\begin{enumerate}
+\item (a) Padronize os dois limites com o desvio padrão \emph{individual} $\sigma=10$: $z=(y-\mu)/\sigma$. Note que o intervalo é simétrico em torno de $\mu=100$, então use $P(|Z|<z)=2\Phi(z)-1$.
+\item (b) Identifique a distribuição de $\bar Y$: população normal $\Rightarrow$ $\bar Y$ é normal \emph{exata}, sem necessidade do TLC. O centro é o mesmo; o denominador da padronização passa a ser $\sigma/\sqrt{n}$ com $n=16$ (extraia $\sqrt{16}$ mentalmente).
+\item Compare (a) e (b) e explique em uma frase por que a segunda probabilidade é maior, citando a redução do erro padrão.
+\end{enumerate}
+\arm{Erro clássico: usar $\sigma/\sqrt n$ no item (a) ou $\sigma$ no item (b). Pergunte sempre: “a v.a.\ do evento é $Y$ ou $\bar Y$?”}
+
+\tit{Exercício 6 — Probabilidades em $t$, $\chi^2$ e $F$}
+\obj{Fluência no uso de tabelas/software para as três distribuições derivadas da normal.}
+\ferr{Seções 11, 12, 13, 15.}
+Roteiro para cada célula da tabela:
+\begin{enumerate}
+\item Identifique a distribuição e os gl: $t_{20}$ (1 gl), $\chi^2_{16}$ (1 gl), $F_{(10,7)}$ (2 gl, \emph{na ordem}).
+\item Reescreva o evento em termos da acumulada $F(\cdot)$ (Seção 15). Para intervalos, subtraia acumuladas.
+\item Escolha a rotina: \R{pt(q,20)}, \R{pchisq(q,16)}, \R{pf(q,10,7)}; acrescente \R{lower.tail=FALSE} para caudas superiores.
+\item Se usar tabela impressa: para $t$, explore a simetria ($P(T<-a)=P(T>a)$); para $\chi^2$ e $F$, lembre que \emph{não há simetria} — trabalhe sempre com $1-F$ e, na cauda inferior de $F$, use a reciprocidade da Seção 13.
+\end{enumerate}
+\mac{Antes de calcular, faça um “teste de sanidade”: $t_{20}$ está centrada em $0$, então $P(Y>2{,}85)$ deve ser pequena; $\chi^2_{16}$ tem média $16$, então $P(Y>8{,}91)$ deve ser grande e $P(Y>32{,}85)$ pequena; $F_{(10,7)}$ tem média próxima de $1{,}4$, então $P(Y>0{,}15)$ deve ser quase $1$. Se o número obtido contrariar isso, você inverteu a cauda.}
+\arm{$P(-2{,}85\le Y\le 2{,}85)$ em $t_{20}$: use $1-2P(T>2{,}85)$ em vez de somar caudas erradas. E jamais troque $F_{(10,7)}$ por $F_{(7,10)}$.}
+
+\tit{Exercício 7 — Problema inverso (quantis)}
+\obj{Passar da probabilidade para o valor crítico nas três distribuições.}
+\ferr{Seções 10, 11, 12, 13, 15.}
+Passo a passo:
+\begin{enumerate}
+\item Traduza cada pedido para a forma padrão $P(Y<y)=\alpha$, ou seja, $y=F^{-1}(\alpha)$. O item (d) está na cauda \emph{superior}: converta com $P(Y>y)=0{,}975\iff P(Y<y)=1-0{,}975$.
+\item Aplique \R{qt(alpha,20)}, \R{qchisq(alpha,16)}, \R{qf(alpha,10,7)} para cada uma das quatro probabilidades.
+\item Se usar tabela: em $t$, valores de $\alpha<0{,}5$ dão quantis \emph{negativos} obtidos por simetria; em $\chi^2$ e $F$ procure a coluna correspondente à área correta e, se a tabela só tiver cauda superior em $F$, use $F_{(\nu_1,\nu_2);\alpha}=1/F_{(\nu_2,\nu_1);1-\alpha}$.
+\end{enumerate}
+\mac{Confira coerência com o Exe 6: os quantis encontrados aqui devem ser compatíveis com as probabilidades de lá (monotonicidade da acumulada). E lembre: quantis de $\chi^2$ e $F$ são sempre positivos — se você obtiver um valor negativo, errou a rotina.}
+\arm{Itens (b), (c) e (d) pedem áreas pequenas; verifique se a distribuição admite quantil naquela cauda e não confunda $\alpha$ com $1-\alpha$.}
+
+\tit{Exercício 8 — Máquina de empacotar}
+\textbf{(a)} \obj{Problema inverso da normal com a \emph{média} como incógnita.}
+\begin{enumerate}
+\item Escreva a condição do enunciado como equação de probabilidade: “apenas 10\% dos pacotes têm menos de 500 g” $\Rightarrow P(Y<500)=0{,}10$, com $Y\sim N(\mu,10^2)$.
+\item Padronize mantendo $\mu$ como incógnita: $\frac{500-\mu}{10}=z_{0{,}10}$.
+\item Busque $z_{0{,}10}$ na normal padrão (atenção ao sinal: área de 10\% à esquerda $\Rightarrow$ $z$ negativo) e isole $\mu$.
+\end{enumerate}
+\mac{Faça um esboço da curva com a área sombreada à esquerda de 500 antes de escolher o sinal de $z$. Sanidade: $\mu$ deve ficar \emph{acima} de 500 g.}
+\textbf{(b)} \obj{Distribuição do total de $n=4$ pacotes.}
+\begin{enumerate}
+\item Converta unidades: 2 kg em gramas.
+\item Escolha uma das rotas equivalentes: $S_4=\sum Y_i\sim N(4\mu,4\sigma^2)$ (Seção 8) ou $\bar Y\sim N(\mu,\sigma^2/4)$ com limite $2000/4$.
+\item Use o $\mu$ obtido em (a) — o enunciado diz “com a máquina assim regulada”. Padronize e obtenha a probabilidade.
+\end{enumerate}
+\arm{O desvio padrão do total é $\sigma\sqrt n$, \emph{não} $n\sigma$. Assumir independência entre os 4 pacotes é hipótese necessária — declare-a.}
+
+\tit{Exercício 9 — Idades em Davis ($n=100$)}
+\textbf{(a)} \obj{Aplicar o TLC a um evento de proximidade $|\bar Y-\mu|<2$.}
+\ferr{Seções 6, 7, 18.}
+\begin{enumerate}
+\item Escreva a distribuição amostral: pelo TLC, $\bar Y\approx N(\mu,\sigma^2/n)$ com $\sigma=15$ e $n=100$; calcule o erro padrão.
+\item Traduza “dentro de dois anos da média populacional” em $-2<\bar Y-\mu<2$.
+\item Padronize; observe que $\mu$ se cancela (por isso o enunciado diz que não é preciso conhecê-lo). Se preferir, fixe $\mu=30$ e use limites $28$ e $32$ — o resultado é idêntico.
+\item Use $2\Phi(z)-1$ pela simetria.
+\end{enumerate}
+\mac{Justifique o uso do TLC: $n=100$ é grande, então a forma da distribuição das idades (que é assimétrica na prática) não impede a aproximação.}
+\textbf{(b)} \obj{Análise qualitativa de sensibilidade.}
+Não recalcule tudo: escreva $z=\dfrac{2\sqrt n}{\sigma}$ e analise o efeito de diminuir $\sigma$ sobre $z$ e, em seguida, sobre a área central $2\Phi(z)-1$ (a acumulada é crescente). Redija a resposta em termos de \emph{concentração da distribuição amostral}: menor $\sigma$ significa população mais homogênea, logo médias amostrais mais próximas de $\mu$.
+\arm{Não confunda “dentro de dois anos” com “dois desvios padrão”. O 2 aqui está na escala original (anos), não na escala $z$.}
+
+\tit{Exercício 10 — GRE}
+\textbf{(a)} \ferr{Seção 10.} Padronize $1200$ usando os parâmetros \emph{individuais} ($\mu=1050$, $\sigma=200$); (i) é a acumulada, (ii) é o complementar — os dois somam 1.
+\textbf{(b)} \ferr{Seção 17.}
+\begin{enumerate}
+\item Reconheça a estrutura condicional: “dos que pontuaram acima de 1200, qual proporção passou de 1400” $\Rightarrow P(Y>1400\mid Y>1200)$.
+\item Como $\{Y>1400\}\subset\{Y>1200\}$, a interseção é o próprio evento menor; monte a razão das duas caudas.
+\item Calcule cada cauda separadamente pela normal e divida (não subtraia!).
+\end{enumerate}
+\arm{Erro frequente: responder $P(1200<Y<1400)$ ou $P(Y>1400)$ sem condicionar. Verifique se o resultado final é maior que $P(Y>1400)$ — condicionar em um evento restringe o espaço amostral e aumenta a proporção.}
+\textbf{(c)} \ferr{Seções 6, 19.}
+\begin{enumerate}
+\item Identifique a v.a.\ correta: agora o valor $1200$ é uma \emph{média de 25 provas}, então a distribuição de referência é a de $\bar Y$, não a de $Y$.
+\item Calcule o erro padrão $\sigma/\sqrt{25}$ e o escore $z=(1200-1050)/EP$.
+\item Compare esse $z$ com o do item (a) e avalie $P(\bar Y\ge1200)$; redija a explicação: sob amostragem aleatória, tal média seria extremamente improvável, o que sugere que o grupo \emph{não} é uma amostra aleatória (autosseleção, preparo prévio).
+\end{enumerate}
+\mac{Este item é o coração do módulo: a mesma pontuação 1200 é “comum” para um indivíduo e “rara” para uma média de 25. A diferença está inteiramente no denominador da padronização.}
+\arm{Não use $\sigma=200$ no item (c); use $\sigma/\sqrt{25}$.}
+
+\tit{Checklist final antes de entregar}
+\begin{itemize}
+\item Em cada questão, escrevi explicitamente \emph{qual} é a v.a.\ e \emph{qual} é a sua distribuição amostral?
+\item Usei $\sigma$ ou $\sigma/\sqrt n$? Justifiquei?
+\item A população é normal (resultado exato) ou apelei ao TLC (aproximado)?
+\item Distribuições assimétricas ($\chi^2$, $F$): tratei as caudas separadamente?
+\item Probabilidades entre 0 e 1, somas de tabelas iguais a 1, unidades convertidas?
+\end{itemize}
+
+\end{multicols*}
+\end{document}
